@@ -1,3 +1,4 @@
+"use client"
 import Button from "@/app/components/button"
 import {
   Sidebar,
@@ -5,9 +6,15 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Plus } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
+import { SideBarOptions } from "@/services/Constants"
+
 
 export function AppSidebar() {
   return (
@@ -21,8 +28,22 @@ export function AppSidebar() {
              </Button>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup>
+          <SidebarContent>
+            <SidebarMenu>
+              {SideBarOptions.map((option, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuButton asChild>
+                    <Link href={option.path}>
+                    <option.icon />
+                    <span>{option.name}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
