@@ -23,8 +23,8 @@ const Login = () => {
 
 
         </div>
-        <div className="flex justify-center mt-5 cursor-pointer">
-          <Button onClick={signInWithGoogle}>Login with Google</Button>
+        <div className="flex justify-center mt-5">
+          <Button className='cursor-pointer' onClick={signInWithGoogle}>Login with Google</Button>
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,useState  } from 'react';
 import { supabase } from '@/services/supabaseClient';
 import { UserDetailContext } from '@/context/UserDetailContext';
 
@@ -36,7 +36,7 @@ function Provider({ children }) {
                         picture: user.user_metadata?.picture
                     }
                 ]);
-                setUser(data);
+                setUser(data[0]);
                 return;
 
         }
