@@ -6,7 +6,7 @@ import Image from 'next/image'
 const Welcome = () => {
     const {user} = useUser();
   return (
-    <div  className='bg-white p-3 rounded-xl flex justify-between items-center gap-3'> 
+    <div  className='mt-5 ml-3 mr-3 bg-white p-3 rounded-xl flex justify-between items-center gap-3'> 
     <div>
         <h2 className='text-lg font-bold'>Welcome Back, {user?.name}</h2>
         <p >AI-Driven Interviews, Hassel-free Hiring</p>
