@@ -4,6 +4,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { Progress } from "@/components/ui/progress"
 import { useState } from 'react'
+import Form from './_components/Form'
 
 const CreateInterviews = () => {
     const [step,setstep]=useState(1);
@@ -15,6 +16,7 @@ const CreateInterviews = () => {
             <h2 className='text-2xl font-bold'>Create New Interview</h2>
         </div>
         <Progress className='mt-4 my-5' value={step * 33.33} />
+        <Form />
     </div>
   )
 }
