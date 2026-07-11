@@ -2,8 +2,11 @@
 import { ArrowLeft } from 'lucide-react'
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import { Progress } from "@/components/ui/progress"
+import { useState } from 'react'
 
 const CreateInterviews = () => {
+    const [step,setstep]=useState(1);
     const router=useRouter();
   return (
     <div className='mt-2 px-10 md:px-24 lg:px-44 xl:px-56'>
@@ -11,6 +14,7 @@ const CreateInterviews = () => {
             <ArrowLeft onClick={() => router.back()} className='cursor-pointer' />
             <h2 className='text-2xl font-bold'>Create New Interview</h2>
         </div>
+        <Progress className='mt-4 my-5' value={step * 33.33} />
     </div>
   )
 }
