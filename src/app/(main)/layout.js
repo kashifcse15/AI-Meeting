@@ -3,10 +3,14 @@ import DashboardProvider from './provider'
 
 const DashboardLayout = ({children}) => {
   return (
-    <div> 
+    <div className='flex flex-row w-full h-full bg-secondary'> 
         <DashboardProvider>
+          <div className='w-full h-full p-10'>
             {children}
-        </DashboardProvider></div>
+          </div>
+            
+        </DashboardProvider>
+        </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Calendar, LayoutDashboard, Settings2Icon, WalletCards } from "lucide-react";
+import { Calendar, Files, LayoutDashboard, Settings2, WalletCards } from "lucide-react";
 
 export const SideBarOptions=[
     {
@@ -12,13 +12,18 @@ export const SideBarOptions=[
         path:"/scheduled-interviews"
     },
     {
+        name:"All Interviews",
+        icon:Files,
+        path:"/all-interviews"
+    },
+    {
         name:"Billing",
         icon:WalletCards,
         path:"/billing"
     },
     {
         name:"Settings",
-        icon:Settings2Icon,
+        icon:Settings2,
         path:"/settings"
     }
 ]
