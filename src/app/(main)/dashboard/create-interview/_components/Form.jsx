@@ -1,6 +1,7 @@
 import { Input } from '@/components/ui/input'
 import React from 'react'
 import { Textarea } from '@/components/ui/textarea'
+import { InterviewType } from '@/services/Constants'
 import {
     Select,
     SelectContent,
@@ -20,7 +21,7 @@ const Form = () => {
     ]
 
     return (
-        <div className='p-5 bg-white'>
+        <div className='p-5 bg-white rounded-xl mt-5'>
             <div>
                 <h2 className='text-sm font-bold'>Job Position</h2>
                 <Input placeholder='Enter Job Position' className='mt-2' />
@@ -49,6 +50,19 @@ const Form = () => {
                     </SelectContent>
                 </Select>
 
+            </div>
+            <div>
+                <h2 className='mt-5 text-sm font-bold'>Interview Type</h2>
+                <div className='flex gap-3 flex-wrap'>
+                    {InterviewType.map((type, index) => {
+                        return (
+                            <div key={index} className='flex gap-2 items-center mt-2 border border-gray-300 bg-blue-50 p-3 rounded-xl cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out'>
+                                <type.icon className="h-6 w-6" />
+                                <span>{type.title}</span>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     )
