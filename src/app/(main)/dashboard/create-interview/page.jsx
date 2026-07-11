@@ -9,35 +9,34 @@ import QuestionList from './_components/QuestionList'
 import { toast } from 'sonner'
 
 const CreateInterviews = () => {
-    const [step,setstep]=useState(1);
-    const [formData,setFormData]=useState({});
-    const onHandleInputChange=(field,value)=>{
-      setFormData(prev=>({
-        ...prev,
-        [field]:value
-      }))
-      console.log(formData)
+  const [step, setstep] = useState(1);
+  const [formData, setFormData] = useState({});
+  const onHandleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+    console.log(formData)
+  }
+  const onGoToNext = () => {
+
+    if (!formData?.jobPosition || !formData?.jobDescription || !formData?.interviewDuration) {
+      toast('Please Enter the first 3 fields')
+      return;
     }
-    const onGoToNext=()=>{
-       console.log("Clicked");
-      if(!formData?.jobPosition || !formData?.jobDescription || !formData?.interviewDuration){
-       console.log("Validation Failed");
-        toast('Please Enter the first 3 fields')
-        return;
-      }
-        console.log("Validation Passed");
-      setstep(step+1);
-    }
-    const router=useRouter();
+
+    setstep(step + 1);
+  }
+  const router = useRouter();
   return (
     <div className='mt-2 px-10 md:px-24 lg:px-44 xl:px-56'>
-        <div className='flex gap-5 items-center'>
-            <ArrowLeft onClick={() => router.back()} className='cursor-pointer' />
-            <h2 className='text-2xl font-bold'>Create New Interview</h2>
-        </div>
-        <Progress className='mt-4 my-5' value={step * 33.33} />
-        {step==1?<Form onHandleInputChange={onHandleInputChange} GoToNext={() => onGoToNext()} />
-        :step==2?<QuestionList />:null}
+      <div className='flex gap-5 items-center'>
+        <ArrowLeft onClick={() => router.back()} className='cursor-pointer' />
+        <h2 className='text-2xl font-bold'>Create New Interview</h2>
+      </div>
+      <Progress className='mt-4 my-5' value={step * 33.33} />
+      {step == 1 ? <Form onHandleInputChange={onHandleInputChange} GoToNext={() => onGoToNext()} />
+        : step == 2 ? <QuestionList formData={formData}/> : null}
     </div>
   )
 }

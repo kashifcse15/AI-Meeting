@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const QuestionList = () => {
+const QuestionList = ({formData}) => {
+
+  useEffect(()=>{
+    if(formData){
+      GenerateQuestionList();
+    }
+  },[formData]);
+  const GenerateQuestionList=()=>{
+
+  }
   return (
     <div>QuestionList</div>
   )
