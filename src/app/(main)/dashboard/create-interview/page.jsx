@@ -5,16 +5,28 @@ import { useRouter } from 'next/navigation'
 import { Progress } from "@/components/ui/progress"
 import { useState } from 'react'
 import Form from './_components/Form'
+import QuestionList from './_components/QuestionList'
+import { toast } from 'sonner'
 
 const CreateInterviews = () => {
     const [step,setstep]=useState(1);
-    const [formData,setFormData]=useState();
+    const [formData,setFormData]=useState({});
     const onHandleInputChange=(field,value)=>{
       setFormData(prev=>({
         ...prev,
         [field]:value
       }))
       console.log(formData)
+    }
+    const onGoToNext=()=>{
+       console.log("Clicked");
+      if(!formData?.jobPosition || !formData?.jobDescription || !formData?.interviewDuration){
+       console.log("Validation Failed");
+        toast('Please Enter the first 3 fields')
+        return;
+      }
+        console.log("Validation Passed");
+      setstep(step+1);
     }
     const router=useRouter();
   return (
@@ -24,7 +36,8 @@ const CreateInterviews = () => {
             <h2 className='text-2xl font-bold'>Create New Interview</h2>
         </div>
         <Progress className='mt-4 my-5' value={step * 33.33} />
-        <Form onHandleInputChange={onHandleInputChange} />
+        {step==1?<Form onHandleInputChange={onHandleInputChange} GoToNext={() => onGoToNext()} />
+        :step==2?<QuestionList />:null}
     </div>
   )
 }

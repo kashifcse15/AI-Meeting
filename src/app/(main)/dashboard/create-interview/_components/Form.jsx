@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select"
 import Button from '@/app/components/button'
 
-const Form = ({ onHandleInputChange }) => {
+const Form = ({ onHandleInputChange, GoToNext }) => {
     const [interviewType, setInterviewType] = useState([]);
     useEffect(()=>{
         if(interviewType){
@@ -91,7 +91,7 @@ const Form = ({ onHandleInputChange }) => {
                     })}
                 </div>
             </div>
-            <Button className="mt-5 w-full">Generate Questions <ArrowRightIcon className="h-4 w-4 ml-2" /></Button>
+            <Button className="mt-5 w-full cursor-pointer" onClick={() => GoToNext()}>Generate Questions <ArrowRightIcon className="h-4 w-4 ml-2" /></Button>
         </div>
     )
 }
