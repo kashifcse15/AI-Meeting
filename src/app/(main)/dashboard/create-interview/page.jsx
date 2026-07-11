@@ -8,6 +8,14 @@ import Form from './_components/Form'
 
 const CreateInterviews = () => {
     const [step,setstep]=useState(1);
+    const [formData,setFormData]=useState();
+    const onHandleInputChange=(field,value)=>{
+      setFormData(prev=>({
+        ...prev,
+        [field]:value
+      }))
+      console.log(formData)
+    }
     const router=useRouter();
   return (
     <div className='mt-2 px-10 md:px-24 lg:px-44 xl:px-56'>
@@ -16,7 +24,7 @@ const CreateInterviews = () => {
             <h2 className='text-2xl font-bold'>Create New Interview</h2>
         </div>
         <Progress className='mt-4 my-5' value={step * 33.33} />
-        <Form />
+        <Form onHandleInputChange={onHandleInputChange} />
     </div>
   )
 }
