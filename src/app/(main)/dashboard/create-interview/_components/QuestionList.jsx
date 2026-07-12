@@ -2,11 +2,17 @@ import { LoaderCircleIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 import axios from 'axios';
+import Button from '@/app/components/button';
+import QuestionContainer from './QuestionContainer';
+import { supabase } from '@/services/supabaseClient';
+import { useUser } from '@/app/auth/provider';
+import {v4 as uuidv4} from 'uuid';
 
 const QuestionList = ({ formData }) => {
 
   const [loading, setLoading] = useState(true);
   const [questionList, setQuestionList] = useState([]);
+  const {user} = useUser();
   useEffect(() => {
     if (formData) {
       GenerateQuestionList();
@@ -32,6 +38,22 @@ const QuestionList = ({ formData }) => {
       setLoading(false);
     }
   }
+  const onFinish=async()=>{
+    const interview_id=uuidv4();
+    const {data,error}=await supabase
+    .from('Interviews')
+    .insert([
+      {...formData,
+        questionList:questionList,
+        userEmail:user?.email,
+        interview_id:interview_id,
+      },
+    ])
+    .select()
+    console.log(data);
+
+  }
+
   return (
     <div>
       {loading && <div className='p-5 bg-blue-50 rounded-xl border border-gray-100 flex gap-5 items-center'>
@@ -43,23 +65,12 @@ const QuestionList = ({ formData }) => {
       </div>}
 
       <div className="space-y-4 mt-6">
-        {questionList.map((item, index) => (
-          <div
-            key={index}
-            className="mt-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-blue-400"
-          >
-            <div className="flex items-start justify-between">
-              <h2 className="text-lg font-semibold text-gray-800">
-                Q{index + 1}. {item.question}
-              </h2>
-
-              <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
-                {item.type}
-              </span>
-            </div>
-          </div>
-        ))}
+          <QuestionContainer questionList={questionList}/>
       </div>
+      {!loading&&<div className='flex justify-end mt-10'>
+        <Button  onClick={()=> onFinish()}> Finish</Button>
+      </div>}
+      
     </div>
   )
 }
