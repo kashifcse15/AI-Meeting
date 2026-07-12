@@ -57,7 +57,7 @@ const Form = ({ onHandleInputChange, GoToNext }) => {
             <div>
                 <h2 className='mt-5 text-sm font-bold'>Interview Duration</h2>
 
-                <Select onValueChange={(value) => onHandleInputChange('interviewDuration', value)}>
+                <Select onValueChange={(value) => onHandleInputChange('duration', value)}>
                     <SelectTrigger className="w-full mt-2">
                         <SelectValue placeholder="Select Duration" />
                     </SelectTrigger>

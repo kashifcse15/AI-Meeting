@@ -16,11 +16,10 @@ const CreateInterviews = () => {
       ...prev,
       [field]: value
     }))
-    console.log(formData)
   }
   const onGoToNext = () => {
 
-    if (!formData?.jobPosition || !formData?.jobDescription || !formData?.interviewDuration) {
+    if (!formData?.jobPosition || !formData?.jobDescription || !formData?.duration) {
       toast('Please Enter the first 3 fields')
       return;
     }
