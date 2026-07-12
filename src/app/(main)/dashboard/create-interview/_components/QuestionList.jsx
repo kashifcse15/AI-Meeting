@@ -8,7 +8,7 @@ import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/auth/provider';
 import { v4 as uuidv4 } from 'uuid';
 
-const QuestionList = ({ formData }) => {
+const QuestionList = ({ formData, OnCreateLink }) => {
 
   const [loading, setLoading] = useState(true);
   const [questionList, setQuestionList] = useState([]);
@@ -57,6 +57,8 @@ const QuestionList = ({ formData }) => {
     console.log(data);
 
   }
+    OnCreateLink(interview_id)
+
 
   return (
     <div>

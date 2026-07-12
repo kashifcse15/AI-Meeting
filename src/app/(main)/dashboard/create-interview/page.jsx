@@ -7,10 +7,12 @@ import { useState } from 'react'
 import Form from './_components/Form'
 import QuestionList from './_components/QuestionList'
 import { toast } from 'sonner'
+import InterviewLink from './_components/InterviewLink'
 
 const CreateInterviews = () => {
-  const [step, setstep] = useState(1);
+  const [step, setstep] = useState(3);
   const [formData, setFormData] = useState({});
+  const [interviewId, setInterviewId]=useState();
   const onHandleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -26,6 +28,12 @@ const CreateInterviews = () => {
 
     setstep(step + 1);
   }
+
+  const onCreateLink=(interview_id)=>{
+      setInterviewId(interview_id);
+      setStep(step+1);
+  }
+
   const router = useRouter();
   return (
     <div className='mt-2 px-10 md:px-24 lg:px-44 xl:px-56'>
@@ -35,7 +43,8 @@ const CreateInterviews = () => {
       </div>
       <Progress className='mt-4 my-5' value={step * 33.33} />
       {step == 1 ? <Form onHandleInputChange={onHandleInputChange} GoToNext={() => onGoToNext()} />
-        : step == 2 ? <QuestionList formData={formData}/> : null}
+        : step == 2 ? <QuestionList formData={formData} OnCreateLink={(interview_id)=>OnCreateLink(interview_id)}/> : 
+        step==3? <InterviewLink formData={formData} interview_id={interviewId} />:null}
     </div>
   )
 }
