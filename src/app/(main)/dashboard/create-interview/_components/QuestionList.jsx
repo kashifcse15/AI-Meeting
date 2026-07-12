@@ -1,4 +1,4 @@
-import { LoaderCircleIcon } from 'lucide-react';
+import { Loader2Icon, LoaderCircleIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -6,13 +6,14 @@ import Button from '@/app/components/button';
 import QuestionContainer from './QuestionContainer';
 import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/auth/provider';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const QuestionList = ({ formData }) => {
 
   const [loading, setLoading] = useState(true);
   const [questionList, setQuestionList] = useState([]);
-  const {user} = useUser();
+  const [saveloading, setSaveLoading] = useState(false);
+  const { user } = useUser();
   useEffect(() => {
     if (formData) {
       GenerateQuestionList();
@@ -38,18 +39,21 @@ const QuestionList = ({ formData }) => {
       setLoading(false);
     }
   }
-  const onFinish=async()=>{
-    const interview_id=uuidv4();
-    const {data,error}=await supabase
-    .from('Interviews')
-    .insert([
-      {...formData,
-        questionList:questionList,
-        userEmail:user?.email,
-        interview_id:interview_id,
-      },
-    ])
-    .select()
+  const onFinish = async () => {
+    setSaveLoading(true);
+    const interview_id = uuidv4();
+    const { data, error } = await supabase
+      .from('Interviews')
+      .insert([
+        {
+          ...formData,
+          questionList: questionList,
+          userEmail: user?.email,
+          interview_id: interview_id,
+        },
+      ])
+      .select()
+    setSaveLoading(false);
     console.log(data);
 
   }
@@ -65,12 +69,14 @@ const QuestionList = ({ formData }) => {
       </div>}
 
       <div className="space-y-4 mt-6">
-          <QuestionContainer questionList={questionList}/>
+        <QuestionContainer questionList={questionList} />
       </div>
-      {!loading&&<div className='flex justify-end mt-10'>
-        <Button  onClick={()=> onFinish()}> Finish</Button>
+      {!loading && <div className='flex justify-end mt-10'>
+        <Button onClick={() => onFinish()} disabled={saveloading}>
+          {saveloading && <Loader2Icon className='animate-spin' />} Finish
+        </Button>
       </div>}
-      
+
     </div>
   )
 }
