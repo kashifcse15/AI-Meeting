@@ -39,26 +39,34 @@ const QuestionList = ({ formData, OnCreateLink }) => {
       setLoading(false);
     }
   }
-  const onFinish = async () => {
-    setSaveLoading(true);
-    const interview_id = uuidv4();
-    const { data, error } = await supabase
-      .from('Interviews')
-      .insert([
-        {
-          ...formData,
-          questionList: questionList,
-          userEmail: user?.email,
-          interview_id: interview_id,
-        },
-      ])
-      .select()
-    setSaveLoading(false);
-    console.log(data);
+ const onFinish = async () => {
+  setSaveLoading(true);
 
+  const interview_id = uuidv4();
+
+  const { data, error } = await supabase
+    .from("Interviews")
+    .insert([
+      {
+        ...formData,
+        questionList,
+        userEmail: user?.email,
+        interview_id,
+      },
+    ])
+    .select();
+
+  setSaveLoading(false);
+
+  if (error) {
+    toast.error("Failed to save interview");
+    return;
   }
-    OnCreateLink(interview_id)
 
+  console.log(data);
+
+  OnCreateLink(interview_id, questionList.length);
+};
 
   return (
     <div>

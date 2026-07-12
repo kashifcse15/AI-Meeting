@@ -1,12 +1,12 @@
 import Button from '@/app/components/button'
 import { Input } from '@/components/ui/input'
-import {CircleCheck, Clock, Clock10Icon, CopyIcon, ListCollapse, Mail,MessageCircle,Send,Copy, Plus, ArrowLeft} from 'lucide-react'
+import {CircleCheck, Clock, Clock10Icon, CopyIcon, ListCollapse, Mail,MessageCircle,Send,Copy, Plus, ArrowLeft, BriefcaseBusiness} from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import {toast} from 'sonner'
 
-const InterviewLink = ({ interviewId, formData, questionList }) => {
-    const url = process.env.NEXT_PUBLIC_HOST_URL + '/' + interviewId;
+const InterviewLink = ({ interview_id, formData, questionCount }) => {
+    const url = process.env.NEXT_PUBLIC_HOST_URL + '/' + interview_id;
     const GetInterviewURL = () => {
         return url;
     }
@@ -46,9 +46,9 @@ const InterviewLink = ({ interviewId, formData, questionList }) => {
                     />
 
                     <button onClick={()=>onCopyLink() }
-                        className="flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 font-medium text-white transition-all duration-200 hover:bg-blue-700 active:scale-95"
+                        className="flex h-11 items-center justify-center gap-2 cursor-grab rounded-xl bg-blue-600 px-6 font-medium text-white transition-all duration-200 hover:bg-blue-700 active:scale-95"
                     >
-                        <CopyIcon className="h-4 w-4 cursor-grab`" />
+                        <CopyIcon className="h-4 w-4 " />
                         Copy Link
                     </button>
                 </div>
@@ -60,7 +60,12 @@ const InterviewLink = ({ interviewId, formData, questionList }) => {
 
                     <div className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
                         <ListCollapse className="h-5 w-5 text-green-600" />
-                        <span className="font-medium">{questionList?.length} Questions</span>
+                        <span className="font-medium">{questionCount} Questions</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
+                        <BriefcaseBusiness className="h-5 w-5 text-red-600" />
+                        <span className="font-medium">Role : {formData?.jobPosition}</span>
                     </div>
                 </div>
 
