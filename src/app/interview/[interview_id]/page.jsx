@@ -1,30 +1,172 @@
-import React from 'react'
-import Header from './_components/Header'
-import Image from 'next/image'
-import { Clock } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+"use client"
+import React, { useContext, useEffect, useState } from "react";
+import Header from "./_components/Header";
+import Image from "next/image";
+import { Clock, Video, User, ShieldCheck, Mic, Camera, Loader2Icon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import Button from "@/app/components/button";
+import { useParams, useRouter } from "next/navigation";
+import { supabase } from "@/services/supabaseClient";
+import { InterviewDataContext } from "@/context/InterviewDataContext";
 
 const Interview = () => {
+  const {interview_id}=useParams();
+  const [interviewData, setInterviewData]=useState();
+  const [userName,setUserName]=useState();
+  const [loading, setLoading]=useState(false);
+  const{interviewInfo, setInterviewInfo}=useContext(InterviewDataContext);
+  const router=useRouter();
+
+  useEffect(()=>{
+      interview_id&&GetInterviewDetails();
+  },[interview_id])
+
+  const GetInterviewDetails=async()=>{
+    setLoading(true);
+    try{
+      let {data:Interviews, error}= await supabase
+    .from('Interviews')
+    .select("jobPosition, jobDescription, duration, type")
+    .eq('interview_id', interview_id)
+
+    setInterviewData(Interviews[0]);
+    setLoading(false);
+    if(Interviews?.length==0){
+        toast('Incorrect Interview Link');
+    }
+    }
+    catch(e){
+      setLoading(false);
+    }
+  }
+
+  const onJoinInterview=async()=>{
+    setLoading(true);
+     let {data:Interviews, error}= await supabase
+    .from('Interviews')
+    .select("*") 
+    .eq('interview_id', interview_id)
+    setInterviewInfo(Interviews[0])
+    router.push('/interview/'+interview_id+'/start')
+    setLoading(false);
+  }
+
   return (
-    <div className='px-10 md:px-28 lg:px-48 xl:px-64 mt-16'>
-      <div className='flex flex-col items-center justify-center border rounded-lg bg-white p-5'>
-        <Image src={'/spotify.jpeg'} alt='logo' width={100} height={100} className='w-[140px]'/>
-        <h2 className='mt-3'>AI-Powered Interview Platform</h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <Header />
 
-        <Image src={'/link.jpg'} alt='interview' width={500} height={500} 
-        className='w-[250px] my-6' />
-        <h2 className='font-bold text-xl'>Full Stack Developer</h2>
-        <h2 className='flex gap-2 items-center text-gray-500 mt-3'><Clock className='h-4 w-4' /> 30 minutes</h2>
+      <div className="mx-auto mt-12 max-w-3xl px-6">
+        <div className="rounded-3xl border border-gray-200 bg-white p-10 shadow-xl">
 
-        <div className='w-full'>
-       <h2>Enter your full name</h2>
-       <Input placeholder="e.g. Jude Bellingham"/>
-    </div>
-    </div>
-    
-   
-    </div>
-  )
-}
+          {/* Logo */}
+          <div className="flex justify-center">
+            <Image
+              src="/spotify.jpeg"
+              alt="logo"
+              width={140}
+              height={140}
+              className="rounded-2xl shadow-md-"
+            />
+          </div>
 
-export default Interview
+          {/* Heading */}
+          <div className="mt-6 text-center">
+            <h1 className="text-3xl font-bold text-gray-900">
+              AI Interview Lobby
+            </h1>
+
+            <p className="mt-2 text-gray-500">
+              Complete the details below before joining your AI-powered interview.
+            </p>
+          </div>
+
+          {/* Illustration */}
+          <div className="mt-8 flex justify-center">
+            <Image
+              src="/link.jpg"
+              alt="Interview"
+              width={280}
+              height={280}
+              className="drop-shadow-xl"
+            />
+          </div>
+
+          {/* Interview Info */}
+          <div className="mt-8 rounded-2xl bg-blue-50 p-6">
+
+            <h2 className="text-2xl font-bold text-gray-800">
+              {interviewData?.jobPosition}
+            </h2>
+
+            <div className="mt-4 flex flex-wrap gap-4">
+
+              <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-sm">
+                <Clock className="h-5 w-5 text-blue-600" />
+                <span className="font-medium">{interviewData?.duration} Minutes</span>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-sm">
+                <ShieldCheck className="h-5 w-5 text-green-600" />
+                <span className="font-medium">Secure Interview</span>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Name */}
+          <div className="mt-8">
+            <label className="mb-2 flex items-center gap-2 font-semibold text-gray-700">
+              <User className="h-5 w-5 text-blue-600" />
+              Full Name
+            </label>
+
+            <Input onChange={(e)=>setUserName(e.target.value)}
+              placeholder="e.g. Jude Bellingham" 
+              className="h-12 rounded-xl"
+            />
+          </div>
+
+          {/* Instructions */}
+          <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-6">
+
+            <h2 className="mb-4 text-lg font-semibold text-gray-800">
+              Before You Begin
+            </h2>
+
+            <ul className="space-y-3 text-gray-600">
+
+              <li className="flex items-center gap-3">
+                <Camera className="h-5 w-5 text-blue-600" />
+                Ensure your camera is enabled.
+              </li>
+
+              <li className="flex items-center gap-3">
+                <Mic className="h-5 w-5 text-green-600" />
+                Test your microphone before joining.
+              </li>
+
+              <li className="flex items-center gap-3">
+                <ShieldCheck className="h-5 w-5 text-orange-500" />
+                Maintain a stable internet connection.
+              </li>
+
+            </ul>
+
+          </div>
+
+          {/* Join Button */}
+          <div className="mt-10">
+            <Button onClick={()=>onJoinInterview()} className="h-12 w-full rounded-xl text-lg" disabled={loading || !userName}>
+              <Video className="mr-2 h-5 w-5" />
+              {loading&&<Loader2Icon />} Join Interview
+            </Button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Interview;
