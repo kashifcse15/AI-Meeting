@@ -46,7 +46,10 @@ const Interview = () => {
     .from('Interviews')
     .select("*") 
     .eq('interview_id', interview_id)
-    setInterviewInfo(Interviews[0])
+    setInterviewInfo({
+      userName: userName,
+      interviewData:Interviews[0]
+    })
     router.push('/interview/'+interview_id+'/start')
     setLoading(false);
   }
