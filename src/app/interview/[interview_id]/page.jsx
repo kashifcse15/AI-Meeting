@@ -1,58 +1,103 @@
-"use client"
+"use client";
+
 import React, { useContext, useEffect, useState } from "react";
 import Header from "./_components/Header";
 import Image from "next/image";
-import { Clock, Video, User, ShieldCheck, Mic, Camera, Loader2Icon } from "lucide-react";
+import {
+  Clock,
+  Video,
+  User,
+  ShieldCheck,
+  Mic,
+  Camera,
+  Loader2Icon,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Button from "@/app/components/button";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/services/supabaseClient";
 import { InterviewDataContext } from "@/context/InterviewDataContext";
+import { toast } from "sonner";
 
 const Interview = () => {
-  const {interview_id}=useParams();
-  const [interviewData, setInterviewData]=useState();
-  const [userName,setUserName]=useState();
-  const [loading, setLoading]=useState(false);
-  const{interviewInfo, setInterviewInfo}=useContext(InterviewDataContext);
-  const router=useRouter();
+  const { interview_id } = useParams();
+  const router = useRouter();
 
-  useEffect(()=>{
-      interview_id&&GetInterviewDetails();
-  },[interview_id])
+  const [interviewData, setInterviewData] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const GetInterviewDetails=async()=>{
+  const { setInterviewInfo } = useContext(InterviewDataContext);
+
+  useEffect(() => {
+    if (interview_id) {
+      GetInterviewDetails();
+    }
+  }, [interview_id]);
+
+  const GetInterviewDetails = async () => {
     setLoading(true);
-    try{
-      let {data:Interviews, error}= await supabase
-    .from('Interviews')
-    .select("jobPosition, jobDescription, duration, type")
-    .eq('interview_id', interview_id)
 
-    setInterviewData(Interviews[0]);
+    try {
+      const { data: interviews, error } = await supabase
+        .from("Interviews")
+        .select("jobPosition, jobDescription, duration, type")
+        .eq("interview_id", interview_id);
+
+      if (error) {
+        toast.error(error.message);
+        setLoading(false);
+        return;
+      }
+
+      if (!interviews || interviews.length === 0) {
+        toast.error("Incorrect Interview Link");
+        setLoading(false);
+        return;
+      }
+
+      setInterviewData(interviews[0]);
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong.");
+    }
+
     setLoading(false);
-    if(Interviews?.length==0){
-        toast('Incorrect Interview Link');
-    }
-    }
-    catch(e){
+  };
+
+  const onJoinInterview = async () => {
+    setLoading(true);
+
+    try {
+      const { data: interviews, error } = await supabase
+        .from("Interviews")
+        .select("*")
+        .eq("interview_id", interview_id);
+
+      if (error) {
+        toast.error(error.message);
+        setLoading(false);
+        return;
+      }
+
+      if (!interviews || interviews.length === 0) {
+        toast.error("Interview not found");
+        setLoading(false);
+        return;
+      }
+
+      setInterviewInfo({
+        userName: userName.trim(),
+        interviewData: interviews[0],
+      });
+
+      router.push(`/interview/${interview_id}/start`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to join interview.");
       setLoading(false);
     }
-  }
-
-  const onJoinInterview=async()=>{
-    setLoading(true);
-     let {data:Interviews, error}= await supabase
-    .from('Interviews')
-    .select("*") 
-    .eq('interview_id', interview_id)
-    setInterviewInfo({
-      userName: userName,
-      interviewData:Interviews[0]
-    })
-    router.push('/interview/'+interview_id+'/start')
-    setLoading(false);
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -68,7 +113,7 @@ const Interview = () => {
               alt="logo"
               width={140}
               height={140}
-              className="rounded-2xl shadow-md-"
+              className="rounded-2xl shadow-md"
             />
           </div>
 
@@ -79,7 +124,8 @@ const Interview = () => {
             </h1>
 
             <p className="mt-2 text-gray-500">
-              Complete the details below before joining your AI-powered interview.
+              Complete the details below before joining your AI-powered
+              interview.
             </p>
           </div>
 
@@ -96,25 +142,23 @@ const Interview = () => {
 
           {/* Interview Info */}
           <div className="mt-8 rounded-2xl bg-blue-50 p-6">
-
             <h2 className="text-2xl font-bold text-gray-800">
               {interviewData?.jobPosition}
             </h2>
 
             <div className="mt-4 flex flex-wrap gap-4">
-
               <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-sm">
                 <Clock className="h-5 w-5 text-blue-600" />
-                <span className="font-medium">{interviewData?.duration} Minutes</span>
+                <span className="font-medium">
+                  {interviewData?.duration} Minutes
+                </span>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-sm">
                 <ShieldCheck className="h-5 w-5 text-green-600" />
                 <span className="font-medium">Secure Interview</span>
               </div>
-
             </div>
-
           </div>
 
           {/* Name */}
@@ -124,21 +168,21 @@ const Interview = () => {
               Full Name
             </label>
 
-            <Input onChange={(e)=>setUserName(e.target.value)}
-              placeholder="e.g. Jude Bellingham" 
+            <Input
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="e.g. Jude Bellingham"
               className="h-12 rounded-xl"
             />
           </div>
 
           {/* Instructions */}
           <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-6">
-
             <h2 className="mb-4 text-lg font-semibold text-gray-800">
               Before You Begin
             </h2>
 
             <ul className="space-y-3 text-gray-600">
-
               <li className="flex items-center gap-3">
                 <Camera className="h-5 w-5 text-blue-600" />
                 Ensure your camera is enabled.
@@ -153,16 +197,23 @@ const Interview = () => {
                 <ShieldCheck className="h-5 w-5 text-orange-500" />
                 Maintain a stable internet connection.
               </li>
-
             </ul>
-
           </div>
 
           {/* Join Button */}
           <div className="mt-10">
-            <Button onClick={()=>onJoinInterview()} className="h-12 w-full rounded-xl text-lg" disabled={loading || !userName}>
+            <Button
+              onClick={onJoinInterview}
+              className="h-12 w-full rounded-xl text-lg"
+              disabled={loading || !userName.trim()}
+            >
+              {loading && (
+                <Loader2Icon className="mr-2 h-5 w-5 animate-spin" />
+              )}
+
               <Video className="mr-2 h-5 w-5" />
-              {loading&&<Loader2Icon />} Join Interview
+
+              Join Interview
             </Button>
           </div>
 
