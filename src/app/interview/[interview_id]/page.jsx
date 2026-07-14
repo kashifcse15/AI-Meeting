@@ -11,6 +11,7 @@ import {
   Mic,
   Camera,
   Loader2Icon,
+  MessageCircleCheck,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Button from "@/app/components/button";
@@ -25,6 +26,7 @@ const Interview = () => {
 
   const [interviewData, setInterviewData] = useState(null);
   const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail]=useState("");
   const [loading, setLoading] = useState(false);
 
   const { setInterviewInfo } = useContext(InterviewDataContext);
@@ -88,6 +90,7 @@ const Interview = () => {
 
       setInterviewInfo({
         userName: userName.trim(),
+        userEmail:userEmail,
         interviewData: interviews[0],
       });
 
@@ -161,7 +164,7 @@ const Interview = () => {
             </div>
           </div>
 
-          {/* Name */}
+          {/* Name & Email*/}
           <div className="mt-8">
             <label className="mb-2 flex items-center gap-2 font-semibold text-gray-700">
               <User className="h-5 w-5 text-blue-600" />
@@ -174,6 +177,19 @@ const Interview = () => {
               placeholder="e.g. Jude Bellingham"
               className="h-12 rounded-xl"
             />
+
+            <label className=" mt-2 mb-2 flex items-center gap-2 font-semibold text-gray-700">
+              <MessageCircleCheck className="h-5 w-5 text-blue-600" />
+              Enter your Email : 
+            </label>
+
+            <Input
+              value={userName}
+              onChange={(e) => setUserEmail(e.target.value)}
+              placeholder="e.g. jude15@gmail.com"
+              className="h-12 rounded-xl"
+            />
+
           </div>
 
           {/* Instructions */}
