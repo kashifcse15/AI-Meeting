@@ -12,12 +12,18 @@ import VAPI from '@vapi-ai/web';
 import EndInterviewDialog from "./_components/EndInterviewDialog";
 import createAssistantOptions from "@/services/AssistantOptions";
 import { toast } from "sonner";
-
+import axios from "axios";
+import { supabase } from "@/services/supabaseClient";
+import { useParams, useRouter } from "next/navigation";
 
 const StartInterview = () => {
   const [activeUser, setActiveUser] = useState(false);
+  const [conversation, setConversation] = useState();
   const { interviewInfo } = useContext(InterviewDataContext);
   const startedRef = useRef(false);
+  const conversationRef = useRef([]);
+  const { interview_id } = useParams();
+  const router = useRouter();
 
   const vapiRef = useRef(
     new VAPI(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY)
@@ -82,23 +88,104 @@ const StartInterview = () => {
       setActiveUser(true);
     };
 
-    const handleCallEnd = () => {
+    const handleCallEnd = async () => {
       toast("Interview Ended");
+      await GenerateFeedback();
+    };
+    const handleMessage = (message) => {
+      console.log("VAPI Message:", message);
+
+      if (message?.conversation) {
+        conversationRef.current = message.conversation;
+      }
+
+      console.log("Conversation Ref:", conversationRef.current);
     };
 
     vapi.on("call-start", handleCallStart);
     vapi.on("speech-start", handleSpeechStart);
     vapi.on("speech-end", handleSpeechEnd);
     vapi.on("call-end", handleCallEnd);
+    vapi.on("message", handleMessage)
 
     return () => {
       vapi.off("call-start", handleCallStart);
       vapi.off("speech-start", handleSpeechStart);
       vapi.off("speech-end", handleSpeechEnd);
       vapi.off("call-end", handleCallEnd);
+      vapi.off("message", handleMessage)
     };
   }, []);
 
+  const GenerateFeedback = async () => {
+    try {
+      console.log("Sending Conversation:");
+      console.log(conversationRef.current);
+
+      // Prevent empty conversation
+      if (!conversationRef.current || conversationRef.current.length === 0) {
+        toast.error("Conversation not found.");
+        return;
+      }
+
+      // Generate AI Feedback
+      const result = await axios.post("/api/ai-feedback", {
+        conversation: conversationRef.current,
+      });
+
+      console.log("AI Response:");
+      console.log(result.data);
+
+      // Parse AI JSON response
+      const feedback =
+        typeof result.data.content === "string"
+          ? JSON.parse(result.data.content)
+          : result.data;
+
+      console.log("Parsed Feedback:");
+      console.log(feedback);
+      console.log("Before Insert");
+
+      // Save feedback in Supabase
+      const { data, error } = await supabase
+        .from("interview-feedback")
+        .insert([
+          {
+            userName: interviewInfo.userName,
+            userEmail: interviewInfo.userEmail,
+            interview_id: interview_id,
+            feedback: feedback,
+            recommendation: feedback.feedback.recommendation,
+          },
+        ])
+        .select();
+
+console.log("After Insert");
+console.log(data);
+console.log(error);
+      if (error) {
+        console.error("Supabase Error:", error);
+        toast.error("Failed to save interview feedback.");
+        return;
+      }
+
+      console.log("Saved Successfully:");
+      console.log(data);
+
+      toast.success("Interview completed successfully!");
+
+      router.replace("/interview/completed");
+    } catch (err) {
+      console.error("Generate Feedback Error:");
+      console.error(err);
+
+      toast.error(
+        err?.response?.data?.error ||
+        err?.message ||
+        "Something went wrong while generating feedback."
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-8 lg:px-36 xl:px-56">
@@ -145,8 +232,8 @@ const StartInterview = () => {
 
           <span
             className={`mt-3 rounded-full px-4 py-1 text-sm font-medium ${activeUser
-                ? "bg-blue-100 text-blue-700"
-                : "bg-green-100 text-green-700"
+              ? "bg-blue-100 text-blue-700"
+              : "bg-green-100 text-green-700"
               }`}
           >
             {activeUser ? "● Listening" : "● Speaking"}

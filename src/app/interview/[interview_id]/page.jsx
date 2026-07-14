@@ -184,7 +184,7 @@ const Interview = () => {
             </label>
 
             <Input
-              value={userName}
+              value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
               placeholder="e.g. jude15@gmail.com"
               className="h-12 rounded-xl"

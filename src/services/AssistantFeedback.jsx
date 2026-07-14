@@ -1,5 +1,6 @@
-const createAssistantFeedback=()=>{
-   ` {{conversation}}
+const createAssistantFeedback = () => {
+  return `
+{{conversation}}
 
 You are an expert Senior Technical Interview Evaluator.
 
@@ -51,12 +52,12 @@ Expected JSON:
       "Provide more real-world examples.",
       "Explain time complexity more clearly."
     ],
-    "summary": "The candidate demonstrated a solid understanding of the required technologies and communicated confidently throughout the interview. They solved most questions effectively but have room to improve in advanced concepts and practical examples. Overall, they showed good potential for the role.",
+    "summary": "...",
     "recommendation": true,
-    "recommendationMessage": "Recommended for the next interview round. The candidate demonstrated strong fundamentals, good communication, and the ability to reason through technical problems."
+    "recommendationMessage": "..."
   }
-}`
-    
 }
+`;
+};
 
 export default createAssistantFeedback;

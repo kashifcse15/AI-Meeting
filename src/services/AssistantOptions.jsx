@@ -2,7 +2,7 @@ const createAssistantOptions = (interviewInfo, questionList) => {
   return {
     name: "AI Recruiter",
 
-    firstMessage: `Hi ${interviewInfo?.userName}! 👋 Welcome to your ${interviewInfo?.interviewData?.jobPosition} interview. I'm excited to be your AI interviewer today. Let's begin whenever you're ready!`,
+    firstMessage: `Hi ${interviewInfo?.userName}! 👋 Welcome to your ${interviewInfo?.interviewData?.jobPosition} interview. I'm excited to be your AI interviewer today. Say Start Now to start the interview !`,
 
     transcriber: {
       provider: "deepgram",
