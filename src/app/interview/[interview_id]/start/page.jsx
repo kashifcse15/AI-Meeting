@@ -7,221 +7,97 @@ import {
   Timer,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import VAPI from '@vapi-ai/web';
-import EndInterviewDialog from "./_components/alert";
+import EndInterviewDialog from "./_components/EndInterviewDialog";
+import createAssistantOptions from "@/services/AssistantOptions";
+import { toast } from "sonner";
+
 
 const StartInterview = () => {
+  const [activeUser, setActiveUser] = useState(false);
   const { interviewInfo } = useContext(InterviewDataContext);
-  const vapi=new VAPI(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY);
+  const startedRef = useRef(false);
 
-  useEffect(()=>{
-    interviewInfo&&startCall();
-  },[interviewInfo])
+  const vapiRef = useRef(
+    new VAPI(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY)
+  )
 
-  const startCall=()=>{
-      let questionList;
-      interviewInfo?.interviewData?.questionList.forEach((item,index)=>{
-        questionList=item?.question+","+questionList
-      })     
+  useEffect(() => {
+    if (interviewInfo && !startedRef.current) {
+      startedRef.current = true;
+      startCall();
+    }
+
+    return () => {
+      vapiRef.current.stop();
+    };
+  }, [interviewInfo]);
+
+  const startCall = async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      const questionList =
+        interviewInfo?.interviewData?.questionList
+          ?.map((item, index) => `${index + 1}. ${item.question}`)
+          .join("\n") || "";
+
+
+      const assistantOptions = createAssistantOptions(
+        interviewInfo,
+        questionList
+      );
+
+      console.log("Interview Info:", interviewInfo);
+      console.log("Question List:", questionList);
+      console.log("Assistant Options:", assistantOptions);
+
+
+      await vapiRef.current.start(assistantOptions);
+    }
+    catch (err) {
+      toast.error('Failed to Start Interview')
+    }
+
+  };
+
+  const stopInterview = () => {
+    vapiRef.current.stop()
   }
 
-  const assistantOptions = {
-  name: "AI Recruiter",
-
-  firstMessage:
-    "Hi {{userName}}! 👋 Welcome to your {{jobPosition}} interview. I'm excited to be your AI interviewer today. Let's begin whenever you're ready!",
-
-  transcriber: {
-    provider: "deepgram",
-    model: "nova-2",
-    language: "en-US",
-  },
-
-  voice: {
-    provider: "playht",
-    voiceId: "jennifer",
-  },
-
-  model: {
-    provider: "openai",
-    model: "gpt-4",
-
-    messages: [
-      {
-        role: "system",
-        content: `
-You are an experienced AI technical interviewer conducting a professional mock interview for the position of {{jobPosition}}.
-
-Candidate Name: ${interviewInfo?.userName}
-
-Your objective is to evaluate the candidate's technical knowledge, communication skills, confidence, and problem-solving ability while maintaining a friendly and engaging conversation.
-
-==========================
-INTERVIEW FLOW
-==========================
-
-1. Welcome the candidate warmly.
-
-Example:
-
-"Hi ${interviewInfo?.userName}, Welcome to your ${interviewInfo?.jobPosition} interview. I'm looking forward to speaking with you today."
-Briefly explain:
-- You'll ask one question at a time.
-- Questions will gradually increase in difficulty.
-- They can take their time to answer.
-- If needed, they can ask for clarification.
-
-==========================
-QUESTION RULES
-==========================
-
-• Ask ONLY ONE question at a time.
-
-• Wait until the candidate completely finishes answering before asking another question.
-
-• Never ask multiple questions in one response.
-
-• Use the interview questions below in the exact order provided.
-
-Questions:
-${questionList}
-
-==========================
-EVALUATING ANSWERS
-==========================
-
-After each answer:
-
-• Briefly evaluate the response.
-
-• Mention one thing they did well.
-
-• Mention one improvement if necessary.
-
-• Keep feedback under 2-3 sentences.
-
-Examples:
-
-"Great explanation! You clearly understood React state management."
-
-"Good attempt. You covered the basics, but you could also mention React's reconciliation process."
-
-==========================
-IF THE CANDIDATE STRUGGLES
-==========================
-
-Never reveal the answer immediately.
-
-Instead:
-
-• Give a small hint.
-
-• Rephrase the question.
-
-• Encourage them.
-
-Examples:
-
-"You're on the right track."
-
-"Think about how React updates the UI."
-
-"Consider the component lifecycle."
-
-"Take your time."
-
-==========================
-CONVERSATION STYLE
-==========================
-
-Speak naturally like an experienced senior interviewer.
-
-Be:
-✅ Friendly
-✅ Professional
-✅ Patient
-✅ Encouraging
-✅ Confident
-
-Use natural phrases like:
-
-"Excellent."
-
-"Interesting approach."
-
-"Nice explanation."
-
-"Let's move on."
-
-"That's a common interview question."
-
-"Awesome, let's continue."
-
-Avoid sounding robotic.
-
-==========================
-DIFFICULTY
-==========================
-
-If the candidate answers confidently:
-
-• Increase the difficulty gradually.
-
-If the candidate struggles repeatedly:
-
-• Simplify the next question while testing the same concept.
-
-==========================
-RULES
-==========================
-
-• Never reveal future questions.
-
-• Never skip questions.
-
-• Never answer your own question.
-
-• Never go off-topic.
-
-• Keep responses concise.
-
-• Stay focused on the interview.
-
-==========================
-ENDING THE INTERVIEW
-==========================
-
-After all questions are completed:
-
-Provide:
-
-• Overall performance summary
-
-• Strengths
-
-• Areas for improvement
-
-• Confidence score out of 10
-
-• Topics to revise
-
-End with:
-
-"Thank you, ${interviewInfo?.userName}! It was a pleasure interviewing you today. I wish you all the best for your future interviews. Keep learning, keep building, and good luck! 🚀"
-        `.trim(),
-      },
-    ],
-  },
-
-
-};
-
-vapi.start(assistantOptions);
-
-const stopInterview=()=>{
-  vapi.stop()
-}
+  useEffect(() => {
+    const vapi = vapiRef.current;
+
+    const handleCallStart = () => {
+      toast("Call Connected....(Best of Luck)");
+    };
+
+    const handleSpeechStart = () => {
+      setActiveUser(false);
+    };
+
+    const handleSpeechEnd = () => {
+      setActiveUser(true);
+    };
+
+    const handleCallEnd = () => {
+      toast("Interview Ended");
+    };
+
+    vapi.on("call-start", handleCallStart);
+    vapi.on("speech-start", handleSpeechStart);
+    vapi.on("speech-end", handleSpeechEnd);
+    vapi.on("call-end", handleCallEnd);
+
+    return () => {
+      vapi.off("call-start", handleCallStart);
+      vapi.off("speech-start", handleSpeechStart);
+      vapi.off("speech-end", handleSpeechEnd);
+      vapi.off("call-end", handleCallEnd);
+    };
+  }, []);
 
 
   return (
@@ -267,8 +143,13 @@ const stopInterview=()=>{
             AI Recruiter
           </h2>
 
-          <span className="mt-3 rounded-full bg-green-100 px-4 py-1 text-sm font-medium text-green-700">
-            ● Speaking
+          <span
+            className={`mt-3 rounded-full px-4 py-1 text-sm font-medium ${activeUser
+                ? "bg-blue-100 text-blue-700"
+                : "bg-green-100 text-green-700"
+              }`}
+          >
+            {activeUser ? "● Listening" : "● Speaking"}
           </span>
 
         </div>
@@ -284,9 +165,6 @@ const stopInterview=()=>{
             {interviewInfo?.userName}
           </h2>
 
-          <span className="mt-3 rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-700">
-            ● Connected
-          </span>
 
         </div>
 
@@ -302,15 +180,15 @@ const stopInterview=()=>{
           <Mic className="h-6 w-6" />
         </button>
 
-        <button  
-          title="End Interview"
-          className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-red-700"
-        >
-          <alert stopInterview={()=>stopInterview()}>
+        <EndInterviewDialog stopInterview={stopInterview}>
+          <button
+            type="button"
+            title="End Interview"
+            className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-red-700"
+          >
             <PhoneOff className="h-7 w-7" />
-          </alert>
-          
-        </button>
+          </button>
+        </EndInterviewDialog>
 
       </div>
       <h2 className="flex items-center justify-center mt-3 text-sm text-gray-500">Interview in Progress....</h2>

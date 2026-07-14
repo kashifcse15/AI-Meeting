@@ -13,9 +13,7 @@ import {
 const EndInterviewDialog = ({ children, stopInterview }) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        {children}
-      </AlertDialogTrigger>
+<AlertDialogTrigger render={children} />
 
       <AlertDialogContent>
         <AlertDialogHeader>
