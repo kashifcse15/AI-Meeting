@@ -1,7 +1,9 @@
 "use client";
 
+import Button from "@/app/components/button";
 import { Mail, Calendar, CircleCheckBig, CircleX } from "lucide-react";
 import moment from "moment";
+import CandidateFeedback from "./CandidateFeedback";
 
 const CandidateList = ({ detail }) => {
   if (!detail || detail.length === 0) {
@@ -103,18 +105,7 @@ const CandidateList = ({ detail }) => {
               </div>
 
               <div className="mt-3">
-
-                {candidate.recommendation ? (
-                  <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm font-semibold text-green-700">
-                    <CircleCheckBig className="h-4 w-4" />
-                    Recommended
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-2 rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-700">
-                    <CircleX className="h-4 w-4" />
-                    Not Recommended
-                  </span>
-                )}
+                <CandidateFeedback />
 
               </div>
 
