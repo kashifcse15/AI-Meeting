@@ -66,10 +66,37 @@ const JobDetails = ({ interviewDetail }) => {
           Job Description
         </h2>
 
-        <p className="mt-3 text-gray-600 leading-7">
+        <p className="mt-3 text-gray-600 leading-7 text-md">
           {interviewDetail.jobDescription || "No Job Description Available"}
         </p>
       </div>
+
+      <div className="mt-8">
+  <h2 className="text-xl font-bold text-gray-800 mb-5">
+    Interview Questions
+  </h2>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+    {interviewDetail?.questionList?.map((item, index) => (
+      <div key={index} className="rounded-2xl border border-gray-200 bg-gray-50 p-5 transition-all duration-300
+          hover:border-primary hover:bg-white hover:shadow-lg">
+        <div className="flex items-start gap-4">
+
+          <div className=" flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white shrink-0">
+            {index + 1}
+          </div>
+
+          <p className="text-gray-700 leading-7">
+            {item.question}
+          </p>
+
+        </div>
+      </div>
+    ))}
+
+  </div>
+</div>
 
     </div>
   );

@@ -5,6 +5,7 @@ import { supabase } from "@/services/supabaseClient";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import JobDetails from "./_components/JobDetails";
+import CandidateList from "./_components/CandidateList";
 
 const InterviewDetails = () => {
   const { interview_id } = useParams();
@@ -45,6 +46,7 @@ const InterviewDetails = () => {
       </h2>
 
       <JobDetails interviewDetail={interviewDetail} />
+      <CandidateList detail={interviewDetail?.["interview-feedback"]}/>
     </div>
   );
 };
