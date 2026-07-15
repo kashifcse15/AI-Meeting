@@ -3,6 +3,7 @@
 import { InterviewDataContext } from "@/context/InterviewDataContext";
 import {
   Mic,
+  PhoneCall,
   PhoneOff,
   Timer,
 } from "lucide-react";
@@ -56,11 +57,6 @@ const StartInterview = () => {
         questionList
       );
 
-      console.log("Interview Info:", interviewInfo);
-      console.log("Question List:", questionList);
-      console.log("Assistant Options:", assistantOptions);
-
-
       await vapiRef.current.start(assistantOptions);
     }
     catch (err) {
@@ -93,13 +89,10 @@ const StartInterview = () => {
       await GenerateFeedback();
     };
     const handleMessage = (message) => {
-      console.log("VAPI Message:", message);
 
       if (message?.conversation) {
         conversationRef.current = message.conversation;
       }
-
-      console.log("Conversation Ref:", conversationRef.current);
     };
 
     vapi.on("call-start", handleCallStart);
@@ -119,8 +112,6 @@ const StartInterview = () => {
 
   const GenerateFeedback = async () => {
     try {
-      console.log("Sending Conversation:");
-      console.log(conversationRef.current);
 
       // Prevent empty conversation
       if (!conversationRef.current || conversationRef.current.length === 0) {
@@ -133,18 +124,11 @@ const StartInterview = () => {
         conversation: conversationRef.current,
       });
 
-      console.log("AI Response:");
-      console.log(result.data);
-
       // Parse AI JSON response
       const feedback =
         typeof result.data.content === "string"
           ? JSON.parse(result.data.content)
           : result.data;
-
-      console.log("Parsed Feedback:");
-      console.log(feedback);
-      console.log("Before Insert");
 
       // Save feedback in Supabase
       const { data, error } = await supabase
@@ -160,21 +144,15 @@ const StartInterview = () => {
         ])
         .select();
 
-console.log("After Insert");
-console.log(data);
-console.log(error);
       if (error) {
         console.error("Supabase Error:", error);
         toast.error("Failed to save interview feedback.");
         return;
       }
 
-      console.log("Saved Successfully:");
-      console.log(data);
-
       toast.success("Interview completed successfully!");
 
-      router.replace("/interview/completed");
+      router.replace("/interview/"+interview_id+"/completed");
     } catch (err) {
       console.error("Generate Feedback Error:");
       console.error(err);
@@ -273,7 +251,7 @@ console.log(error);
             title="End Interview"
             className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-red-700"
           >
-            <PhoneOff className="h-7 w-7" />
+            <PhoneCall className="h-7 w-7" />
           </button>
         </EndInterviewDialog>
 
