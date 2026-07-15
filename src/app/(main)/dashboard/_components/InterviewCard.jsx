@@ -1,12 +1,13 @@
 import moment from "moment";
 import React from "react";
-import { CalendarDays, Clock3, Briefcase, Play, ShareIcon, Share2 } from "lucide-react";
+import { CalendarDays, Clock3, Briefcase, Play, ShareIcon, Share2, ArrowRight } from "lucide-react";
 import Button from "@/app/components/button";
 import { toast } from "sonner";
 import { Share } from "next/font/google";
 import { useUser } from "@/app/auth/provider";
+import Link from "next/link";
 
-const InterviewCard = ({ interview }) => {
+const InterviewCard = ({ interview, viewDetail=false }) => {
 
 const url=process.env.NEXT_PUBLIC_HOST_URL+'/'+interview?.interview_id
   const copyLink = () => {
@@ -80,11 +81,12 @@ const onSend = async () => {
           </span>
         </div>
 
-        <div className="flex items-center gap-3 text-gray-600">
+        <div className="flex items-center  gap-3 text-gray-600">
           <Clock3 className="h-4 w-4 text-primary" />
           <span className="text-sm">
             {interview.duration} Minutes
           </span>
+          <span className="ml-35 text-green-800">{interview['interview-feedback']?.length} Candidates</span>
         </div>
 
         <div className="flex items-center gap-3 text-gray-600">
@@ -95,7 +97,7 @@ const onSend = async () => {
         </div>
       </div>
 
-      <div className="flex gap-3 mt-6">
+      {!viewDetail?<div className="flex gap-3 mt-6">
 
         <Button onClick={()=>copyLink()} className="w-full" variant="outline">
           Copy Link
@@ -106,6 +108,11 @@ const onSend = async () => {
           Share
         </Button>
       </div>
+      :
+      <Link href={'/scheduled-interviews/'+interview?.interview_id+'/details'}>
+      <Button className="mt-5 w-full">View Detail <ArrowRight /></Button>
+      </Link>
+}
 
     </div>
   );
