@@ -19,7 +19,9 @@ const LatestInterview = () => {
     let { data: Interviews, error } = await supabase
       .from('Interviews')
       .select('*')
-      .eq('userEmail', user?.email);
+      .eq('userEmail', user?.email)
+      .order('id',{ascending:false})
+      .limit(6)
 
     console.log(Interviews);
     setInterviewList(Interviews);
