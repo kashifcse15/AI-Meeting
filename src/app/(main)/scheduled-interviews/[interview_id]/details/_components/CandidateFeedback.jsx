@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { useReactToPrint } from "react-to-print";
 import { Progress } from "@/components/ui/progress";
 import {
   User,
@@ -58,37 +57,12 @@ const CandidateFeedback = ({ candidate }) => {
   }
 };
 
-  const downloadReport = async () => {
+const handlePrint = useReactToPrint({
+  contentRef: reportRef,
+  documentTitle: `${candidate.userName}_Interview_Report`,
+});
 
-    const element = reportRef.current;
-
-    const canvas = await html2canvas(element, {
-      scale: 2,
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-
-    const pdfHeight =
-      (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(
-      imgData,
-      "PNG",
-      0,
-      0,
-      pdfWidth,
-      pdfHeight
-    );
-
-    pdf.save(
-      `${candidate.userName}_Interview_Report.pdf`
-    );
-
-  };
+  
   return (
     <Dialog onOpenChange={handleOpenChange}>
       <DialogTrigger
@@ -345,7 +319,7 @@ const CandidateFeedback = ({ candidate }) => {
 
               <div className="flex justify-end gap-4 mt-8">
 
-                <Button onClick={downloadReport} className="flex items-center gap-2">
+                <Button onClick={handlePrint} className="flex items-center gap-2">
 
                   <Download size={18} />
 
