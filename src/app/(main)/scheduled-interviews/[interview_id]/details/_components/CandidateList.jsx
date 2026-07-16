@@ -105,7 +105,7 @@ const CandidateList = ({ detail }) => {
               </div>
 
               <div className="mt-3">
-                <CandidateFeedback />
+                <CandidateFeedback candidate={candidate}/>
 
               </div>
 
