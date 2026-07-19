@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useUser } from "@/app/auth/provider";
+import { useUser } from "@/app/components2/auth/provider";
 import { supabase } from "@/services/supabaseClient";
 import { VideoIcon } from "lucide-react";
 import Button from "@/app/components/button";

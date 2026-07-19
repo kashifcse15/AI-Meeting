@@ -4,7 +4,7 @@ import { CalendarDays, Clock3, Briefcase, Play, ShareIcon, Share2, ArrowRight } 
 import Button from "@/app/components/button";
 import { toast } from "sonner";
 import { Share } from "next/font/google";
-import { useUser } from "@/app/auth/provider";
+import { useUser } from "@/app/components2/auth/provider";
 import Link from "next/link";
 
 const InterviewCard = ({ interview, viewDetail=false }) => {

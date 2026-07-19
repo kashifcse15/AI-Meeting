@@ -1,5 +1,5 @@
 "use client"
-import { useUser } from '@/app/auth/provider';
+import { useUser } from '@/app/components2/auth/provider';
 import Button from '@/app/components/button';
 import { supabase } from '@/services/supabaseClient';
 import { CameraIcon, VideoIcon } from 'lucide-react';

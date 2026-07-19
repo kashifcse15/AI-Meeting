@@ -15,8 +15,10 @@ import { Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { SideBarOptions } from "@/services/Constants";
+import { useRouter } from "next/navigation";
 
 export function AppSidebar() {
+  const router = useRouter();
   return (
     <Sidebar>
       <SidebarHeader className="flex items-center justify-center mt-2">
@@ -29,7 +31,7 @@ export function AppSidebar() {
           priority
         />
 
-        <Button className="w-full mt-2 cursor-pointer">
+        <Button onClick={() => router.push('/dashboard/create-interview')} className="w-full mt-2 cursor-pointer">
           <Plus className="w-5 h-5" />
           <span className="text-lg font-light">Create Interview</span>
         </Button>

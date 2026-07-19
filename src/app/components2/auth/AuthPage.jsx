@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
 import React from 'react'
-import Button from '../components/button'
+import Button from '../../components/button'
 import {supabase} from '@/services/supabaseClient'
 
 const Login = () => {

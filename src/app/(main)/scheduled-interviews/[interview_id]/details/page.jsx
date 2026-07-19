@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@/app/auth/provider";
+import { useUser } from "@/app/components2/auth/provider";
 import { supabase } from "@/services/supabaseClient";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";

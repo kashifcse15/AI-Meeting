@@ -5,7 +5,7 @@ import axios from 'axios';
 import Button from '@/app/components/button';
 import QuestionContainer from './QuestionContainer';
 import { supabase } from '@/services/supabaseClient';
-import { useUser } from '@/app/auth/provider';
+import { useUser } from '@/app/components2/auth/provider';
 import { v4 as uuidv4 } from 'uuid';
 
 const QuestionList = ({ formData, OnCreateLink }) => {
@@ -55,6 +55,13 @@ const QuestionList = ({ formData, OnCreateLink }) => {
       },
     ])
     .select();
+
+    const userUpdate=await supabase
+    .from('Users'
+    .update({credits:Number(user?.credits)-1})
+    .eq('email',user?.email)
+    .select()
+    )
 
   setSaveLoading(false);
 

@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Form from "./_components/Form";
 import QuestionList from "./_components/QuestionList";
 import InterviewLink from "./_components/InterviewLink";
+import { useUser } from "@/app/components2/auth/provider";
 
 const CreateInterviews = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const CreateInterviews = () => {
   const [formData, setFormData] = useState({});
   const [interviewId, setInterviewId] = useState("");
   const [questionCount, setQuestionCount] = useState(0);
+  const {user}=useUser();
 
   const onHandleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -26,6 +28,10 @@ const CreateInterviews = () => {
   };
 
   const onGoToNext = () => {
+    if(user?.credits<=0){
+      toast('Out of Interviews , Buy Credits to Continue');
+      return;
+    }
     if (
       !formData?.jobPosition ||
       !formData?.jobDescription ||
