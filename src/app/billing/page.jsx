@@ -3,6 +3,21 @@ import { CheckCircle2 } from "lucide-react";
 import { plans } from "@/services/PaymentOptions";
 
 const Page = () => {
+  const handlePayment = async() => {
+  
+    const response=await fetch("/api/create-order", {
+        method:"POST",
+        headers:{
+          "Content-Type": "application/json",
+        },
+        body:JSON.stringify({
+          amount:price,
+        }),
+    });
+    const data=await response.json();
+
+}
+
   return (
     <div className="min-h-screen bg-slate-950 text-white px-6 py-10">
       <div className="max-w-7xl mx-auto">
@@ -56,7 +71,7 @@ const Page = () => {
                 ))}
               </ul>
 
-              <button
+              <button onClick={()=>handlePayment(plan.price)}
                 className={`mt-10 w-full rounded-xl py-3 font-semibold transition ${
                   plan.popular
                     ? "bg-violet-600 hover:bg-violet-700"
