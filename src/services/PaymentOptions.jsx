@@ -1,7 +1,7 @@
 export const plans = [
   {
     name: "Basic",
-    price: "₹99",
+    price: 99,
     credits: 5,
     description:
       "Perfect for getting started. Practice with AI-powered mock interviews and receive instant feedback.",
@@ -17,7 +17,7 @@ export const plans = [
   },
   {
     name: "Pro",
-    price: "₹299",
+    price: 299,
     credits: 25,
     description:
       "Ideal for active job seekers looking to improve their interview skills with detailed analytics.",
@@ -33,7 +33,7 @@ export const plans = [
   },
   {
     name: "Premium",
-    price: "₹799",
+    price: 799,
     credits: 100,
     description:
       "The complete interview preparation package for professionals and serious candidates.",
