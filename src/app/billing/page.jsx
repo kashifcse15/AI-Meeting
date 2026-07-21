@@ -2,24 +2,43 @@
 import React from "react";
 import { CheckCircle2 } from "lucide-react";
 import { plans } from "@/services/PaymentOptions";
+import Script from "next/script";
 
 const Page = () => {
-  const handlePayment = async(price) => {
-  
-    const response=await fetch("/api/create-order", {
-        method:"POST",
-        headers:{
-          "Content-Type": "application/json",
-        },
-        body:JSON.stringify({
-          amount:price,
-        }),
-    });
-    const data=await response.json();
+  const handlePayment = async (price) => {
+  const response = await fetch("/api/create-order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      amount: price,
+    }),
+  });
 
-}
+  const data = await response.json();
+
+  const options = {
+    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    amount: data.amount,
+    currency: data.currency,
+    name: "AI Meeting",
+    description: "Premium Plan",
+    order_id: data.id,
+
+    handler: function (response) {
+      console.log(response);
+    },
+  };
+
+  const razorpay = new window.Razorpay(options);
+  razorpay.open();
+};
 
   return (
+    <>
+    <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+
     <div className="min-h-screen bg-slate-950 text-white px-6 py-10">
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
@@ -90,6 +109,7 @@ const Page = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
