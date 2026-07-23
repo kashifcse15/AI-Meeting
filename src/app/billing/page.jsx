@@ -6,7 +6,7 @@ import Script from "next/script";
 import { useUser } from "../components2/auth/provider";
 
 const Page = () => {
-  const user=useUser();
+  const {user}=useUser();
   const handlePayment = async (plan) => {
     const response = await fetch("/api/create-order", {
       method: "POST",
