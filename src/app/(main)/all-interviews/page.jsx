@@ -80,7 +80,9 @@ const Page = () => {
           <InterviewCard
             key={interview.id}
             interview={interview}
+            
           />
+          
         ))}
 
       </div>

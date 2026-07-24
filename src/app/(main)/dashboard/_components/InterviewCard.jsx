@@ -99,7 +99,7 @@ const onSend = async () => {
 
       {!viewDetail?<div className="flex gap-3 mt-6">
 
-        <Button onClick={()=>copyLink()} className="w-full" variant="outline">
+        <Button onClick={()=>copyLink()} className='w-full text-sm flex items-center justify-center gap-2' variant="outline">
           Copy Link
         </Button>
 

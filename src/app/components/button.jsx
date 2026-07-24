@@ -38,7 +38,7 @@ const Button = forwardRef(
             opacity-0
             transition-opacity
             duration-500
-            group-hover:opacity-100
+            
           "
         />
 
@@ -52,7 +52,6 @@ const Button = forwardRef(
             px-6 py-3
             transition-colors
             duration-300
-            group-hover:bg-blue-700
           "
         >
           {children}
