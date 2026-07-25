@@ -6,7 +6,7 @@ import React from 'react'
 import {toast} from 'sonner'
 
 const InterviewLink = ({ interview_id, formData, questionCount }) => {
-    const url = process.env.NEXT_PUBLIC_HOST_URL + '/' + interview_id;
+    const url = `${process.env.NEXT_PUBLIC_HOST_URL}/interview/${interview_id}`;
     const GetInterviewURL = () => {
         return url;
     }
@@ -41,7 +41,7 @@ const InterviewLink = ({ interview_id, formData, questionCount }) => {
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     <Input
                         className="h-11 flex-1 rounded-xl border-gray-300 bg-white text-gray-700 cursor-crosshair"
-                        defaultValue={GetInterviewURL()}
+                        value={url}
                         readOnly
                     />
 

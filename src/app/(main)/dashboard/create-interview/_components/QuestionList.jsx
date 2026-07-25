@@ -39,41 +39,46 @@ const QuestionList = ({ formData, OnCreateLink }) => {
       setLoading(false);
     }
   }
- const onFinish = async () => {
-  setSaveLoading(true);
+  const onFinish = async () => {
+    setSaveLoading(true);
 
-  const interview_id = uuidv4();
+    const interview_id = uuidv4();
 
-  const { data, error } = await supabase
-    .from("Interviews")
-    .insert([
-      {
-        ...formData,
-        questionList,
-        userEmail: user?.email,
-        interview_id,
-      },
-    ])
-    .select();
+    const { data: interviewData, error: interviewError } = await supabase
+      .from("Interviews")
+      .insert([
+        {
+          ...formData,
+          questionList,
+          userEmail: user?.email,
+          interview_id,
+        },
+      ])
+      .select();
 
-    const userUpdate=await supabase
-    .from('Users'
-    .update({credits:Number(user?.credits)-1})
-    .eq('email',user?.email)
-    .select()
-    )
+    const { data: userData, error: userError } = await supabase
+      .from("Users")
+      .update({
+        credits: user.credits - 1,
+      })
+      .eq("email", user.email)
+      .select();
 
-  setSaveLoading(false);
+    if (userError) {
+      console.error(userError);
+    }
 
-  if (error) {
-    toast.error("Failed to save interview");
-    return;
-  }
+    setSaveLoading(false);
 
-  console.log(data);
+    if (interviewError) {
+      toast.error("Failed to save interview");
+      return;
+    }
 
-  OnCreateLink(interview_id, questionList.length);
-};
+    console.log(interviewData);
+
+    OnCreateLink(interview_id, questionList.length);
+  };
 
   return (
     <div>

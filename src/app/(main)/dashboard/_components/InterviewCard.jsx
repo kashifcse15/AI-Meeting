@@ -1,3 +1,4 @@
+"use client"
 import moment from "moment";
 import React from "react";
 import { CalendarDays, Clock3, Briefcase, Play, ShareIcon, Share2, ArrowRight } from "lucide-react";
@@ -6,6 +7,7 @@ import { toast } from "sonner";
 import { Share } from "next/font/google";
 import { useUser } from "@/app/components2/auth/provider";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const InterviewCard = ({ interview, viewDetail=false }) => {
 
@@ -14,6 +16,8 @@ const url=process.env.NEXT_PUBLIC_HOST_URL+'/'+interview?.interview_id
     navigator.clipboard.writeText(url);
     toast('Copied');
   }
+
+  const pathname=usePathname();
 
 const onSend = async () => {
   if (navigator.share) {
@@ -86,7 +90,8 @@ const onSend = async () => {
           <span className="text-sm">
             {interview.duration} Minutes
           </span>
-          <span className="ml-35 text-green-800">{interview['interview-feedback']?.length} Candidates</span>
+          {pathname==='/scheduled-interviews' && (
+            <span className="ml-35 text-green-800">{interview['interview-feedback']?.length} Candidates</span>)}
         </div>
 
         <div className="flex items-center gap-3 text-gray-600">
