@@ -20,6 +20,8 @@ import { useParams, useRouter } from "next/navigation";
 const StartInterview = () => {
   const [activeUser, setActiveUser] = useState(false);
   const [conversation, setConversation] = useState();
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
   const { interviewInfo } = useContext(InterviewDataContext);
   const startedRef = useRef(false);
   const conversationRef = useRef([]);
@@ -29,6 +31,16 @@ const StartInterview = () => {
   const vapiRef = useRef(
     new VAPI(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY)
   )
+
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   useEffect(() => {
     if (interviewInfo && !startedRef.current) {
@@ -74,6 +86,7 @@ const StartInterview = () => {
 
     const handleCallStart = () => {
       toast("Call Connected....(Best of Luck)");
+      setIsRunning(true);
     };
 
     const handleSpeechStart = () => {
@@ -85,6 +98,7 @@ const StartInterview = () => {
     };
 
     const handleCallEnd = async () => {
+      setIsRunning(false);
       toast("Interview Ended");
       await GenerateFeedback();
     };
@@ -152,7 +166,7 @@ const StartInterview = () => {
 
       toast.success("Interview completed successfully!");
 
-      router.replace("/interview/"+interview_id+"/completed");
+      router.replace("/interview/" + interview_id + "/completed");
     } catch (err) {
       console.error("Generate Feedback Error:");
       console.error(err);

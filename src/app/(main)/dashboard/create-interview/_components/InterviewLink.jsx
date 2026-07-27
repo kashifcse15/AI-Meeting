@@ -14,6 +14,22 @@ const InterviewLink = ({ interview_id, formData, questionCount }) => {
         await navigator.clipboard.writeText(url);
         toast.success("Interview link copied successfully!");
     }
+    const onSend = async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "AI Recruiter Interview",
+            text: "Join my AI interview!",
+            url,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast.success("Interview link copied!");
+      }
+    };
     return (
         <div className='flex flex-col items-center justify-center mt-10'>
             <div className='w-[50px] h-[50px]'>
@@ -76,17 +92,17 @@ const InterviewLink = ({ interview_id, formData, questionCount }) => {
 
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
 
-                        <button className="flex flex-col items-center justify-center cursor-pointer rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
+                        <button onClick={()=>onSend()} className="flex flex-col items-center justify-center cursor-pointer rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
                             <Mail className="mb-2 h-7 w-7 text-red-500" />
                             <span className="text-sm font-medium">Email</span>
                         </button>
 
-                        <button className="flex flex-col items-center justify-center cursor-pointer rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
+                        <button onClick={()=>onSend()} className="flex flex-col items-center justify-center cursor-pointer rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
                             <Send className="mb-2 h-7 w-7 text-sky-500" />
                             <span className="text-sm font-medium">Telegram</span>
                         </button>
 
-                        <button className="flex flex-col items-center cursor-pointer justify-center rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
+                        <button onClick={()=>onSend()} className="flex flex-col items-center cursor-pointer justify-center rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
                             <MessageCircle className="mb-2 h-7 w-7 text-green-500" />
                             <span className="text-sm font-medium">WhatsApp</span>
                         </button>
