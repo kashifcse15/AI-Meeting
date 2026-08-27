@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 import {
     FileText,
     UploadCloud,
@@ -13,9 +14,11 @@ import {
     ShieldCheck,
     File,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const ResumeAnalyser = () => {
     const [resume, setResume] = useState(null);
+    const [jobDescription, setJobDescription] = useState("");
 
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
@@ -24,6 +27,10 @@ const ResumeAnalyser = () => {
             setResume(file);
         }
     };
+
+    const handleJobDescriptionChange = (e) => {
+        setJobDescription(e.target.value);
+    }
 
     return (
         <div className="min-h-screen bg-slate-50 px-6 py-10 text-slate-900">
@@ -108,9 +115,7 @@ const ResumeAnalyser = () => {
                                 </span>
                             </label>
                         ) : (
-                            /* =========================
-                               Uploaded File
-                            ========================= */
+                            
                             <div className="flex min-h-[350px] flex-col items-center justify-center rounded-xl border border-indigo-200 bg-indigo-50/30 px-6 text-center">
 
                                 {/* File Icon */}
@@ -145,13 +150,27 @@ const ResumeAnalyser = () => {
                                     CHECK ATS SCORE
                                 </button>
 
-                                {/* Change Resume */}
-                                <label
-                                    htmlFor="resume-upload"
-                                    className="mt-3 cursor-pointer text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:underline"
-                                >
-                                    Choose a different resume
-                                </label>
+                                {/* Job Description */}
+                                <div className="mt-8 w-full border-t border-slate-200 pt-6 text-left">
+                                    <div className="mb-3">
+                                        <h2 className="text-base font-semibold text-slate-800">
+                                            Job Description
+                                        </h2>
+
+                                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                                            Paste the job description to compare your resume against the role.
+                                        </p>
+                                    </div>
+
+                                    <Textarea
+                                        placeholder="Paste the job description here..."
+                                        className="min-h-[150px] resize-none rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm shadow-none transition-all placeholder:text-slate-400 focus-visible:border-indigo-400 focus-visible:ring-2 focus-visible:ring-indigo-100"
+                                    />
+
+                                    <p className="mt-2 text-right text-[11px] text-slate-400">
+                                        Recommended: Include the complete job description
+                                    </p>
+                                </div>
                             </div>
                         )}
 
