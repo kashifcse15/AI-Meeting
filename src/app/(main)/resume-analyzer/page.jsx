@@ -1,6 +1,16 @@
 import { FileText, UploadCloud, CheckCircle2, BarChart3, ListChecks, ShieldAlert, KeyRound, WandSparkles, Coins, ShieldCheck, } from "lucide-react";
 
+
 const ResumeAnalyser = () => {
+  const [resume, setResume] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      setResume(file);
+    }
+  };
     return (
         <div className="min-h-screen bg-slate-50 px-6 py-10 text-slate-900">
             <div className="mx-auto max-w-6xl">
