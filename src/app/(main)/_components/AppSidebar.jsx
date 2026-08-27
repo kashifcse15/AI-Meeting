@@ -23,7 +23,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="flex items-center justify-center mt-2">
         <Image
-          src="/spotify.jpeg"
+          src="/MockPilot.jpeg"
           alt="logo"
           width={200}
           height={100}

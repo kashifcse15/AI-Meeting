@@ -22,9 +22,9 @@ export const SideBarOptions=[
         path:"/billing"
     },
     {
-        name:"Settings",
-        icon:Settings2,
-        path:"/settings"
+        name:"ATS Resume Analyzer",
+        icon:BriefcaseBusinessIcon,
+        path:"/resume-analyzer"
     }
 ]
 

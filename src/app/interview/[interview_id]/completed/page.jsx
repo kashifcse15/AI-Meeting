@@ -8,8 +8,8 @@ const InterviewCompleted = () => {
       {/* Navbar */}
       <header className="flex items-center justify-between px-8 py-6 lg:px-20">
         <Image
-          src="/spotify.jpeg"
-          alt="Spotify"
+          src="/MockPilot.jpeg"
+          alt="logo"
           width={150}
           height={45}
           className="object-contain"
