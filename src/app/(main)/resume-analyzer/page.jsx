@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 const ResumeAnalyser = () => {
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState("");
+    const wordCount = jobDescription.trim().split(/\s+/).filter(Boolean).length;
 
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
@@ -115,7 +116,7 @@ const ResumeAnalyser = () => {
                                 </span>
                             </label>
                         ) : (
-                            
+
                             <div className="flex min-h-[350px] flex-col items-center justify-center rounded-xl border border-indigo-200 bg-indigo-50/30 px-6 text-center">
 
                                 {/* File Icon */}
@@ -141,17 +142,18 @@ const ResumeAnalyser = () => {
                                     {(resume.size / 1024 / 1024).toFixed(2)} MB
                                 </p>
 
-                                {/* Check ATS Button */}
-                                <button
-                                    type="button"
-                                    className="mt-7 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md cursor-pointer"
+                                {/* Change Resume */}
+                                <label
+                                    htmlFor="resume-upload"
+                                    className="mt-3 cursor-pointer text-xs font-medium text-indigo-600 transition-colors hover:text-indigo-700 hover:underline"
                                 >
-                                    <BarChart3 size={18} />
-                                    CHECK ATS SCORE
-                                </button>
+                                    Choose a different resume
+                                </label>
+
 
                                 {/* Job Description */}
                                 <div className="mt-8 w-full border-t border-slate-200 pt-6 text-left">
+
                                     <div className="mb-3">
                                         <h2 className="text-base font-semibold text-slate-800">
                                             Job Description
@@ -163,14 +165,49 @@ const ResumeAnalyser = () => {
                                     </div>
 
                                     <Textarea
+                                        value={jobDescription}
+                                        onChange={handleJobDescriptionChange}
                                         placeholder="Paste the job description here..."
                                         className="min-h-[150px] resize-none rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm shadow-none transition-all placeholder:text-slate-400 focus-visible:border-indigo-400 focus-visible:ring-2 focus-visible:ring-indigo-100"
                                     />
 
-                                    <p className="mt-2 text-right text-[11px] text-slate-400">
-                                        Recommended: Include the complete job description
-                                    </p>
+                                    {/* Word Count */}
+                                    <div className="mt-2 flex items-center justify-between">
+
+                                        <p className="text-[11px] text-slate-400">
+                                            Minimum 25 words required
+                                        </p>
+
+                                        <p
+                                            className={`text-[11px] font-medium ${wordCount >= 25
+                                                    ? "text-green-600"
+                                                    : "text-slate-400"
+                                                }`}
+                                        >
+                                            {wordCount} / 25 words
+                                        </p>
+
+                                    </div>
+
+                                    {/* Check ATS Button */}
+                                    <div className="flex justify-center">
+
+                                        <button
+                                            type="button"
+                                            disabled={wordCount < 25}
+                                            className={`mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ${wordCount >= 25
+                                                    ? "cursor-pointer bg-indigo-600 hover:bg-indigo-700 hover:shadow-md"
+                                                    : "cursor-not-allowed bg-slate-300"
+                                                }`}
+                                        >
+                                            <BarChart3 size={18} />
+                                            CHECK ATS SCORE
+                                        </button>
+
+                                    </div>
+
                                 </div>
+
                             </div>
                         )}
 
