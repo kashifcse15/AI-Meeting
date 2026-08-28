@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
-    "@google/genai": "^2.11.0",
+    "@google/genai": "^2.19.0",
     "@supabase/supabase-js": "^2.110.1",
     "@vapi-ai/web": "^2.6.1",
     "axios": "^1.18.1",
