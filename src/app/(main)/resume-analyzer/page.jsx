@@ -33,6 +33,23 @@ const ResumeAnalyser = () => {
         setJobDescription(e.target.value);
     }
 
+    const handleATSCheck=async()=>{
+        if(!resume && !jobDescription){
+            alert("Please upload a resume and enter a job description.");
+            return;
+        }
+        const formData = new FormData();
+        formData.append("resume", resume);
+        formData.append("jobDescription", jobDescription);
+
+        const response=await fetch("/api/resume-amalyzer",{
+            method:"POST",
+            body:formData,
+        });
+        const data=await response.json();
+        console.log(data);
+    }
+
     return (
         <div className="min-h-screen bg-slate-50 px-6 py-10 text-slate-900">
             <div className="mx-auto max-w-6xl">
@@ -195,6 +212,7 @@ const ResumeAnalyser = () => {
                                         <button
                                             type="button"
                                             disabled={wordCount < 25}
+                                            onClick={handleATSCheck}
                                             className={`mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ${wordCount >= 25
                                                     ? "cursor-pointer bg-indigo-600 hover:bg-indigo-700 hover:shadow-md"
                                                     : "cursor-not-allowed bg-slate-300"
