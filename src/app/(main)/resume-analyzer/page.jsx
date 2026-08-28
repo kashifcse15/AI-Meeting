@@ -33,21 +33,60 @@ const ResumeAnalyzer = () => {
         setJobDescription(e.target.value);
     }
 
-    const handleATSCheck=async()=>{
-        if(!resume && !jobDescription){
-            alert("Please upload a resume and enter a job description.");
+    const handleATSCheck = async () => {
+
+    if (!resume || wordCount < 25) {
+        return;
+    }
+
+    try {
+
+        console.log("Starting ATS analysis...");
+
+        const formData = new FormData();
+
+        formData.append(
+            "resume",
+            resume
+        );
+
+        formData.append(
+            "jobDescription",
+            jobDescription
+        );
+
+        const response = await fetch(
+            "/api/resume-analyzer",
+            {
+                method: "POST",
+                body: formData,
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(
+                "ATS API Error:",
+                data.error
+            );
+
             return;
         }
-        const formData = new FormData();
-        formData.append("resume", resume);
-        formData.append("jobDescription", jobDescription);
 
-        const response=await fetch("/api/resume-analyzer",{
-            method:"POST",
-            body:formData,
-        });
-        const data=await response.json();
+        console.log(
+            "ATS RESULT:",
+            data
+        );
+
+    } catch (error) {
+
+        console.error(
+            "ATS ERROR:",
+            error
+        );
     }
+};
 
     return (
         <div className="min-h-screen bg-slate-50 px-6 py-10 text-slate-900">

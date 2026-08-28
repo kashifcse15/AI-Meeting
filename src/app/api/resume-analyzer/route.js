@@ -1,7 +1,7 @@
-import { GoogleGenAI } from "@google/genai";
+import { CohereClientV2 } from "cohere-ai";
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.ATS_RESUME_ANALYZER_API_KEY,
+const cohere = new CohereClientV2({
+    token: process.env.COHERE_API_KEY,
 });
 
 export async function POST(request) {
@@ -21,80 +21,181 @@ export async function POST(request) {
             );
         }
 
-        // Convert uploaded resume into a Blob
-        const resumeBlob = new Blob(
-            [await resume.arrayBuffer()],
+        console.log("Resume:", resume.name);
+        console.log("Resume type:", resume.type);
+
+        // --------------------------------
+        // STEP 1: Convert resume to Buffer
+        // --------------------------------
+
+        const buffer = Buffer.from(
+            await resume.arrayBuffer()
+        );
+
+        // --------------------------------
+        // STEP 2: Send PDF to Cohere Parse
+        // --------------------------------
+
+        const parseForm = new FormData();
+
+        const pdfBlob = new Blob(
+            [buffer],
             {
                 type: resume.type,
             }
         );
 
-        // Upload resume to Gemini Files API
-        const uploadedFile = await ai.files.upload({
-            file: resumeBlob,
-            config: {
-                mimeType: resume.type,
-                displayName: resume.name,
-            },
-        });
+        parseForm.append(
+            "file",
+            pdfBlob,
+            resume.name
+        );
 
-        console.log("Uploaded file:", uploadedFile.name);
-        console.log("File URI:", uploadedFile.uri);
+        console.log("Sending resume to Cohere Parse...");
 
-        // Send resume + job description to Gemini
-        const response = await ai.models.generateContent({
-            model: "gemini-3.7-flash",
+        const parseResponse = await fetch(
+            "https://api.cohere.com/v2/parse",
+            {
+                method: "POST",
 
-            contents: [
-                {
-                    fileData: {
-                        fileUri: uploadedFile.uri,
-                        mimeType: uploadedFile.mimeType,
-                    },
+                headers: {
+                    Authorization: `Bearer ${process.env.COHERE_API_KEY}`,
                 },
+
+                body: parseForm,
+            }
+        );
+
+        if (!parseResponse.ok) {
+            const errorText = await parseResponse.text();
+
+            console.error(
+                "Cohere Parse Error:",
+                errorText
+            );
+
+            throw new Error(
+                `Cohere Parse failed: ${errorText}`
+            );
+        }
+
+        const parsedData = await parseResponse.json();
+
+        console.log("Resume parsed successfully!");
+
+        // --------------------------------
+        // STEP 3: Extract text
+        // --------------------------------
+
+        const resumeText = parsedData.pages
+            ?.map((page) => page.markdown || "")
+            .join("\n\n");
+
+        if (!resumeText) {
+            throw new Error(
+                "Could not extract text from resume."
+            );
+        }
+
+        console.log(
+            "Extracted resume text length:",
+            resumeText.length
+        );
+
+        // --------------------------------
+        // STEP 4: Analyze with Cohere
+        // --------------------------------
+
+        const analysisResponse = await cohere.chat({
+            model: "command-a-plus-05-2026",
+
+            messages: [
                 {
-                    text: `
-You are an expert resume reviewer.
+                    role: "user",
 
-Analyze the uploaded resume against the following job description.
+                    content: `
+You are an expert ATS resume analyzer.
 
-JOB DESCRIPTION:
+Analyze the following resume against the provided job description.
+
+====================
+RESUME
+====================
+
+${resumeText}
+
+====================
+JOB DESCRIPTION
+====================
+
 ${jobDescription}
 
-Give me:
+====================
+ANALYSIS REQUIRED
+====================
 
-1. A short summary of the candidate.
-2. The candidate's strongest skills.
-3. The biggest strengths of the resume.
-4. The biggest weaknesses.
-5. How relevant the resume is to this job.
-6. Important missing skills or keywords.
-7. General suggestions for improvement.
+Evaluate:
 
-Keep the response concise and useful.
+1. Overall resume quality
+2. ATS compatibility
+3. Job relevance
+4. Keyword matching
+5. Formatting
+6. Grammar and writing quality
+7. Skills
+8. Experience
+9. Strengths
+10. Weaknesses
+11. Missing keywords
+12. Suggestions for improvement
+
+Important rules:
+
+- Only use information actually present in the resume.
+- Do not invent skills, experience, education, or achievements.
+- Compare the resume specifically against the job description.
+- Give practical and actionable suggestions.
+- Be honest about weaknesses.
+
+For now, return the analysis as normal text.
                     `,
                 },
             ],
         });
 
-        console.log("Gemini response:");
-        console.log(response.text);
+        const analysis = analysisResponse.message.content
+            .filter((item) => item.type === "text")
+            .map((item) => item.text)
+            .join("\n");
+
+        console.log("Cohere analysis completed!");
+
+        // --------------------------------
+        // STEP 5: Return result
+        // --------------------------------
 
         return Response.json({
             success: true,
-            analysis: response.text,
+            analysis,
         });
 
     } catch (error) {
-        console.error("Gemini ATS Error:", error);
+
+        console.error(
+            "COHERE ATS ERROR:",
+            error
+        );
 
         return Response.json(
             {
                 success: false,
-                error: "Failed to analyze resume.",
-                details: error.message,
+                error:
+                    error.message ||
+                    "Failed to analyze resume.",
             },
-            { status: 500 }
+            {
+                status: 500,
+            }
         );
     }
 }
