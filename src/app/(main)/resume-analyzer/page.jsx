@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-const ResumeAnalyser = () => {
+const ResumeAnalyzer = () => {
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState("");
     const wordCount = jobDescription.trim().split(/\s+/).filter(Boolean).length;
@@ -42,7 +42,7 @@ const ResumeAnalyser = () => {
         formData.append("resume", resume);
         formData.append("jobDescription", jobDescription);
 
-        const response=await fetch("/api/resume-amalyzer",{
+        const response=await fetch("/api/resume-analyzer",{
             method:"POST",
             body:formData,
         });
@@ -368,4 +368,4 @@ const ResumeAnalyser = () => {
     );
 };
 
-export default ResumeAnalyser;
+export default ResumeAnalyzer;
