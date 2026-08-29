@@ -131,8 +131,58 @@ const ResumeAnalysis = () => {
                                 measurable impact, and tailoring the resume
                                 more closely to the target role.
                             </p>
+
+                             <div className="mt-7 grid gap-3 sm:grid-cols-2">
+
+                                <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50/60 px-4 py-3">
+                                    <CheckCircle2
+                                        size={18}
+                                        className="text-emerald-600"
+                                    />
+
+                                    <span className="text-sm font-medium text-slate-700">
+                                        Strong technical foundation
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50/60 px-4 py-3">
+                                    <CheckCircle2
+                                        size={18}
+                                        className="text-emerald-600"
+                                    />
+
+                                    <span className="text-sm font-medium text-slate-700">
+                                        Good project experience
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center gap-3 rounded-xl border border-amber-100 bg-amber-50/60 px-4 py-3">
+                                    <TriangleAlert
+                                        size={18}
+                                        className="text-amber-600"
+                                    />
+
+                                    <span className="text-sm font-medium text-slate-700">
+                                        Keyword alignment can improve
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center gap-3 rounded-xl border border-amber-100 bg-amber-50/60 px-4 py-3">
+                                    <TriangleAlert
+                                        size={18}
+                                        className="text-amber-600"
+                                    />
+
+                                    <span className="text-sm font-medium text-slate-700">
+                                        More measurable impact needed
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-        </div></div>
+        
     )}
