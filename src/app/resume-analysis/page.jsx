@@ -296,6 +296,151 @@ const ResumeAnalysis = () => {
                     </div>
 
                 </div>
+                  <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+                    <div className="flex items-start gap-4">
+
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                            <AlertTriangle size={21} />
+                        </div>
+
+                        <div>
+                            <h2 className="text-lg font-semibold text-slate-900">
+                                Key Weaknesses
+                            </h2>
+
+                            <p className="mt-1 text-sm text-slate-500">
+                                These areas are currently limiting your resume's
+                                effectiveness.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div className="mt-6 grid gap-4 md:grid-cols-3">
+
+                        <div className="rounded-xl border border-slate-100 bg-slate-50 p-5">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-amber-600">
+                                01
+                            </span>
+
+                            <h3 className="mt-3 text-sm font-semibold">
+                                Weak measurable impact
+                            </h3>
+
+                            <p className="mt-2 text-xs leading-5 text-slate-500">
+                                Several project bullets describe what you built
+                                but do not quantify the result or impact.
+                            </p>
+                        </div>
+
+                        <div className="rounded-xl border border-slate-100 bg-slate-50 p-5">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-amber-600">
+                                02
+                            </span>
+
+                            <h3 className="mt-3 text-sm font-semibold">
+                                Missing job-specific keywords
+                            </h3>
+
+                            <p className="mt-2 text-xs leading-5 text-slate-500">
+                                Some important technologies and requirements
+                                from the job description are not reflected.
+                            </p>
+                        </div>
+
+                        <div className="rounded-xl border border-slate-100 bg-slate-50 p-5">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-amber-600">
+                                03
+                            </span>
+
+                            <h3 className="mt-3 text-sm font-semibold">
+                                Generic positioning
+                            </h3>
+
+                            <p className="mt-2 text-xs leading-5 text-slate-500">
+                                Your opening profile could be tailored more
+                                specifically toward the target position.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                {/* ================= REJECTION RISKS ================= */}
+                <div className="mt-6 overflow-hidden rounded-2xl border border-red-200 bg-white shadow-sm">
+
+                    <div className="border-b border-red-100 bg-red-50/70 px-6 py-5">
+                        <div className="flex items-center gap-3">
+
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-100 text-red-600">
+                                <ShieldAlert size={20} />
+                            </div>
+
+                            <div>
+                                <h2 className="font-semibold text-red-900">
+                                    Why Could Your Resume Be Rejected?
+                                </h2>
+
+                                <p className="mt-1 text-xs text-red-700/70">
+                                    Potential issues that could hurt your chances
+                                    during automated or recruiter screening.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div className="divide-y divide-slate-100">
+
+                        <div className="flex gap-4 px-6 py-5">
+                            <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-red-500" />
+
+                            <div>
+                                <h3 className="text-sm font-semibold text-slate-800">
+                                    Low keyword alignment
+                                </h3>
+
+                                <p className="mt-1 text-xs leading-5 text-slate-500">
+                                    Important terms from the job description may
+                                    not appear naturally in your resume.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-4 px-6 py-5">
+                            <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-red-500" />
+
+                            <div>
+                                <h3 className="text-sm font-semibold text-slate-800">
+                                    Experience does not clearly demonstrate impact
+                                </h3>
+
+                                <p className="mt-1 text-xs leading-5 text-slate-500">
+                                    Recruiters may struggle to understand the
+                                    measurable value of your projects.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-4 px-6 py-5">
+                            <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-red-500" />
+
+                            <div>
+                                <h3 className="text-sm font-semibold text-slate-800">
+                                    Resume isn't sufficiently tailored
+                                </h3>
+
+                                <p className="mt-1 text-xs leading-5 text-slate-500">
+                                    A generic resume can perform worse when the
+                                    role expects highly specific skills or
+                                    terminology.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
         </div>
