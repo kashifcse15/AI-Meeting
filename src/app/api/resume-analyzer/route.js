@@ -54,9 +54,72 @@ export async function POST(request) {
             parser.parseBuffer(buffer);
         });
 
+        const analysisResponse = await cohere.chat({
+            model: "command-a-plus-05-2026",
+
+            messages: [
+                {
+                    role: "user",
+                    content: `
+You are an expert ATS resume analyzer.
+
+Analyze the resume against the provided job description.
+
+====================
+RESUME
+====================
+
+${resumeText}
+
+====================
+JOB DESCRIPTION
+====================
+
+${jobDescription}
+
+====================
+ANALYSIS REQUIRED
+====================
+
+Evaluate the following:
+
+- Overall resume quality
+- ATS compatibility
+- Job relevance
+- Keyword matching
+- Formatting
+- Grammar and writing quality
+- Technical skills
+- Experience and projects
+- Strengths
+- Weaknesses
+- Missing keywords
+- Actionable improvement suggestions
+
+Important instructions:
+
+- Compare the resume specifically against the provided job description.
+- Only use information actually present in the resume.
+- Do not invent skills, experience, achievements, or qualifications.
+- Identify important skills and keywords from the job description that are missing from the resume.
+- Give practical and actionable suggestions.
+- Be objective and honest about weaknesses.
+- Do not give generic advice when a specific improvement can be identified.
+
+Return a clear and well-organized analysis.
+                    `,
+                },
+            ],
+        });
+
+        const analysis = analysisResponse.message.content
+            .filter((item) => item.type === "text")
+            .map((item) => item.text)
+            .join("\n");
+
         return Response.json({
             success: true,
-            resumeText,
+            analysis,
         });
 
     } catch (error) {
@@ -65,7 +128,9 @@ export async function POST(request) {
         return Response.json(
             {
                 success: false,
-                error: error.message || "Failed to analyze resume.",
+                error:
+                    error.message ||
+                    "Failed to analyze resume.",
             },
             { status: 500 }
         );
