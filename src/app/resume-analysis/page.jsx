@@ -182,6 +182,64 @@ const ResumeAnalysis = () => {
                         </div>
                     </div>
                 </div>
+                  <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+                    {/* Formatting */}
+                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                        <div className="flex items-center justify-between">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                <FileText size={19} />
+                            </div>
+
+                            <span className="text-xs font-semibold text-emerald-600">
+                                Excellent
+                            </span>
+                        </div>
+
+                        <p className="mt-5 text-sm font-medium text-slate-500">
+                            Resume Formatting
+                        </p>
+
+                        <div className="mt-2 flex items-end gap-1">
+                            <span className="text-3xl font-bold">91</span>
+                            <span className="mb-1 text-sm text-slate-400">
+                                /100
+                            </span>
+                        </div>
+
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+                            <div className="h-full w-[91%] rounded-full bg-blue-500" />
+                        </div>
+                    </div>
+
+                    {/* Keywords */}
+                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                        <div className="flex items-center justify-between">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                                <KeyRound size={19} />
+                            </div>
+
+                            <span className="text-xs font-semibold text-amber-600">
+                                Needs Work
+                            </span>
+                        </div>
+
+                        <p className="mt-5 text-sm font-medium text-slate-500">
+                            Keyword Match
+                        </p>
+
+                        <div className="mt-2 flex items-end gap-1">
+                            <span className="text-3xl font-bold">76</span>
+                            <span className="mb-1 text-sm text-slate-400">
+                                /100
+                            </span>
+                        </div>
+
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+                            <div className="h-full w-[76%] rounded-full bg-violet-500" />
+                        </div>
+                    </div>
+                    </div>
             </div>
         </div>
         
