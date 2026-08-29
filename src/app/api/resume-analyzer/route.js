@@ -22,51 +22,37 @@ export async function POST(request) {
             );
         }
 
-        console.log("Resume:", resume.name);
-        console.log("Resume type:", resume.type);
-
-        // PDF → Buffer
+        // Convert uploaded PDF to Buffer
         const buffer = Buffer.from(
             await resume.arrayBuffer()
         );
 
-        // Create PDF parser
+        // Parse PDF and extract text
         const parser = new PDFParser();
 
-        // Parse PDF
         const resumeText = await new Promise((resolve, reject) => {
+            parser.on("pdfParser_dataError", (error) => {
+                reject(error.parserError);
+            });
 
-    parser.on("pdfParser_dataError", (error) => {
-        reject(error.parserError);
-    });
-
-    parser.on("pdfParser_dataReady", (pdfData) => {
-
-        console.log("PDF DATA READY");
-
-        const text = pdfData.Pages
-            .map(page =>
-                page.Texts
-                    .map(textItem =>
-                        textItem.R
-                            .map(r => r.T)
-                            .join("")
+            parser.on("pdfParser_dataReady", (pdfData) => {
+                const text = pdfData.Pages
+                    .map((page) =>
+                        page.Texts
+                            .map((textItem) =>
+                                textItem.R
+                                    .map((r) => r.T)
+                                    .join("")
+                            )
+                            .join(" ")
                     )
-                    .join(" ")
-            )
-            .join("\n");
+                    .join("\n");
 
-        console.log("RAW TEXT:");
-        console.log(text);
+                resolve(text);
+            });
 
-        resolve(text);
-    });
-
-    parser.parseBuffer(buffer);
-});
-
-        console.log("Resume text extracted!");
-        console.log(resumeText);
+            parser.parseBuffer(buffer);
+        });
 
         return Response.json({
             success: true,
@@ -74,12 +60,12 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error("PDF ERROR:", error);
+        console.error("Resume Analyzer Error:", error);
 
         return Response.json(
             {
                 success: false,
-                error: error.message,
+                error: error.message || "Failed to analyze resume.",
             },
             { status: 500 }
         );
