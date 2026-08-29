@@ -35,17 +35,35 @@ export async function POST(request) {
 
         // Parse PDF
         const resumeText = await new Promise((resolve, reject) => {
-            parser.on("pdfParser_dataError", (error) => {
-                reject(error.parserError);
-            });
 
-            parser.on("pdfParser_dataReady", (pdfData) => {
-                const text = parser.getRawTextContent();
-                resolve(text);
-            });
+    parser.on("pdfParser_dataError", (error) => {
+        reject(error.parserError);
+    });
 
-            parser.parseBuffer(buffer);
-        });
+    parser.on("pdfParser_dataReady", (pdfData) => {
+
+        console.log("PDF DATA READY");
+
+        const text = pdfData.Pages
+            .map(page =>
+                page.Texts
+                    .map(textItem =>
+                        textItem.R
+                            .map(r => r.T)
+                            .join("")
+                    )
+                    .join(" ")
+            )
+            .join("\n");
+
+        console.log("RAW TEXT:");
+        console.log(text);
+
+        resolve(text);
+    });
+
+    parser.parseBuffer(buffer);
+});
 
         console.log("Resume text extracted!");
         console.log(resumeText);
