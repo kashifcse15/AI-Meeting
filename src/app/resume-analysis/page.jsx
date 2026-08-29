@@ -40,7 +40,7 @@ const ResumeAnalysis = () => {
                         the target job description.
                     </p>
                 </div>
-                 <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_-20px_rgba(15,23,42,0.15)]">
+                <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_-20px_rgba(15,23,42,0.15)]">
 
                     {/* subtle background decoration */}
                     <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-indigo-100/50 blur-3xl" />
@@ -132,7 +132,7 @@ const ResumeAnalysis = () => {
                                 more closely to the target role.
                             </p>
 
-                             <div className="mt-7 grid gap-3 sm:grid-cols-2">
+                            <div className="mt-7 grid gap-3 sm:grid-cols-2">
 
                                 <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50/60 px-4 py-3">
                                     <CheckCircle2
@@ -182,7 +182,7 @@ const ResumeAnalysis = () => {
                         </div>
                     </div>
                 </div>
-                  <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
                     {/* Formatting */}
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
@@ -239,8 +239,67 @@ const ResumeAnalysis = () => {
                             <div className="h-full w-[76%] rounded-full bg-violet-500" />
                         </div>
                     </div>
+                    {/* Grammar */}
+                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                        <div className="flex items-center justify-between">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                                <CheckCircle2 size={19} />
+                            </div>
+
+                            <span className="text-xs font-semibold text-emerald-600">
+                                Strong
+                            </span>
+                        </div>
+
+                        <p className="mt-5 text-sm font-medium text-slate-500">
+                            Grammar & Writing
+                        </p>
+
+                        <div className="mt-2 flex items-end gap-1">
+                            <span className="text-3xl font-bold">88</span>
+                            <span className="mb-1 text-sm text-slate-400">
+                                /100
+                            </span>
+                        </div>
+
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+                            <div className="h-full w-[88%] rounded-full bg-emerald-500" />
+                        </div>
                     </div>
+
+                    {/* Relevance */}
+                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                        <div className="flex items-center justify-between">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
+                                <Target size={19} />
+                            </div>
+
+                            <span className="text-xs font-semibold text-amber-600">
+                                Moderate
+                            </span>
+                        </div>
+
+                        <p className="mt-5 text-sm font-medium text-slate-500">
+                            Job Relevance
+                        </p>
+
+                        <div className="mt-2 flex items-end gap-1">
+                            <span className="text-3xl font-bold">81</span>
+                            <span className="mb-1 text-sm text-slate-400">
+                                /100
+                            </span>
+                        </div>
+
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+                            <div className="h-full w-[81%] rounded-full bg-orange-500" />
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
         </div>
-        
-    )}
+
+
+    )
+}
