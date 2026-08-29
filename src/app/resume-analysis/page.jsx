@@ -40,6 +40,8 @@ const ResumeAnalysis = () => {
                         the target job description.
                     </p>
                 </div>
+
+                {/* ================= HERO SCORE ================= */}
                 <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_-20px_rgba(15,23,42,0.15)]">
 
                     {/* subtle background decoration */}
@@ -132,6 +134,7 @@ const ResumeAnalysis = () => {
                                 more closely to the target role.
                             </p>
 
+                            {/* Quick highlights */}
                             <div className="mt-7 grid gap-3 sm:grid-cols-2">
 
                                 <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50/60 px-4 py-3">
@@ -182,6 +185,8 @@ const ResumeAnalysis = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* ================= SCORE CARDS ================= */}
                 <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
                     {/* Formatting */}
@@ -239,6 +244,7 @@ const ResumeAnalysis = () => {
                             <div className="h-full w-[76%] rounded-full bg-violet-500" />
                         </div>
                     </div>
+
                     {/* Grammar */}
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
                         <div className="flex items-center justify-between">
@@ -296,7 +302,9 @@ const ResumeAnalysis = () => {
                     </div>
 
                 </div>
-                  <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+                {/* ================= WEAKNESSES ================= */}
+                <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
 
                     <div className="flex items-start gap-4">
 
@@ -441,10 +449,69 @@ const ResumeAnalysis = () => {
 
                     </div>
                 </div>
+
+                {/* ================= SUGGESTIONS ================= */}
+                <div className="mt-6 rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-white p-6 shadow-sm">
+
+                    <div className="flex items-center gap-3">
+
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+                            <Sparkles size={20} />
+                        </div>
+
+                        <div>
+                            <h2 className="text-lg font-semibold text-slate-900">
+                                Recommended Improvements
+                            </h2>
+
+                            <p className="mt-1 text-sm text-slate-500">
+                                High-impact changes that can improve your score.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div className="mt-6 space-y-3">
+
+                        <div className="flex gap-3 rounded-xl border border-white bg-white p-4 shadow-sm">
+                            <CheckCircle2
+                                size={18}
+                                className="mt-0.5 shrink-0 text-indigo-600"
+                            />
+                            <p className="text-sm text-slate-600">
+                                Tailor your summary and skills section to match
+                                the terminology used in the target job.
+                            </p>
+                        </div>
+
+                        <div className="flex gap-3 rounded-xl border border-white bg-white p-4 shadow-sm">
+                            <CheckCircle2
+                                size={18}
+                                className="mt-0.5 shrink-0 text-indigo-600"
+                            />
+                            <p className="text-sm text-slate-600">
+                                Add measurable outcomes to project and experience
+                                bullets wherever possible.
+                            </p>
+                        </div>
+
+                        <div className="flex gap-3 rounded-xl border border-white bg-white p-4 shadow-sm">
+                            <CheckCircle2
+                                size={18}
+                                className="mt-0.5 shrink-0 text-indigo-600"
+                            />
+                            <p className="text-sm text-slate-600">
+                                Incorporate missing job-specific keywords only
+                                where they accurately reflect your experience.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-
         </div>
+    );
+};
 
-
-    )
-}
+export default ResumeAnalysis;
