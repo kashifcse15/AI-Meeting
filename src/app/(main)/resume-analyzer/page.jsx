@@ -13,12 +13,14 @@ import {
     Coins,
     ShieldCheck,
     File,
+    Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const ResumeAnalyzer = () => {
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState("");
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
     const wordCount = jobDescription.trim().split(/\s+/).filter(Boolean).length;
 
     const handleFileChange = (e) => {
@@ -35,7 +37,10 @@ const ResumeAnalyzer = () => {
 
     const handleATSCheck = async () => {
 
+    setIsAnalyzing(true);
+
     if (!resume || wordCount < 25) {
+        setIsAnalyzing(false);
         return;
     }
 
@@ -247,18 +252,31 @@ const ResumeAnalyzer = () => {
                                     {/* Check ATS Button */}
                                     <div className="flex justify-center">
 
-                                        <button
-                                            type="button"
-                                            disabled={wordCount < 25}
-                                            onClick={handleATSCheck}
-                                            className={`mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ${wordCount >= 25
-                                                    ? "cursor-pointer bg-indigo-600 hover:bg-indigo-700 hover:shadow-md"
-                                                    : "cursor-not-allowed bg-slate-300"
-                                                }`}
-                                        >
-                                            <BarChart3 size={18} />
-                                            CHECK ATS SCORE
-                                        </button>
+                                       <button
+    type="button"
+    onClick={handleATSCheck}
+    disabled={wordCount < 25 || isAnalyzing}
+    className={`mt-7 mb-5 inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ${
+        wordCount >= 25 && !isAnalyzing
+            ? "cursor-pointer bg-indigo-600 hover:bg-indigo-700 hover:shadow-md"
+            : "cursor-not-allowed bg-slate-300"
+    }`}
+>
+    {isAnalyzing ? (
+        <>
+            <Loader2
+                size={18}
+                className="animate-spin"
+            />
+            ANALYZING RESUME...
+        </>
+    ) : (
+        <>
+            <BarChart3 size={18} />
+            CHECK ATS SCORE
+        </>
+    )}
+</button>
 
                                     </div>
 
