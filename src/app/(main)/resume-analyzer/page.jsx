@@ -37,61 +37,61 @@ const ResumeAnalyzer = () => {
 
     const handleATSCheck = async () => {
 
-    setIsAnalyzing(true);
+        setIsAnalyzing(true);
 
-    if (!resume || wordCount < 25) {
-        setIsAnalyzing(false);
-        return;
-    }
-
-    try {
-
-        console.log("Starting ATS analysis...");
-
-        const formData = new FormData();
-
-        formData.append(
-            "resume",
-            resume
-        );
-
-        formData.append(
-            "jobDescription",
-            jobDescription
-        );
-
-        const response = await fetch(
-            "/api/resume-analyzer",
-            {
-                method: "POST",
-                body: formData,
-            }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error(
-                "ATS API Error:",
-                data.error
-            );
-
+        if (!resume || wordCount < 25) {
+            setIsAnalyzing(false);
             return;
         }
 
-        console.log(
-            "ATS RESULT:",
-            data
-        );
+        try {
 
-    } catch (error) {
+            console.log("Starting ATS analysis...");
 
-        console.error(
-            "ATS ERROR:",
-            error
-        );
-    }
-};
+            const formData = new FormData();
+
+            formData.append(
+                "resume",
+                resume
+            );
+
+            formData.append(
+                "jobDescription",
+                jobDescription
+            );
+
+            const response = await fetch(
+                "/api/resume-analyzer",
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error(
+                    "ATS API Error:",
+                    data.error
+                );
+
+                return;
+            }
+
+            console.log(
+                "ATS RESULT:",
+                data
+            );
+
+        } catch (error) {
+
+            console.error(
+                "ATS ERROR:",
+                error
+            );
+        }
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 px-6 py-10 text-slate-900">
@@ -240,8 +240,8 @@ const ResumeAnalyzer = () => {
 
                                         <p
                                             className={`text-[11px] font-medium ${wordCount >= 25
-                                                    ? "text-green-600"
-                                                    : "text-slate-400"
+                                                ? "text-green-600"
+                                                : "text-slate-400"
                                                 }`}
                                         >
                                             {wordCount} / 25 words
@@ -252,31 +252,36 @@ const ResumeAnalyzer = () => {
                                     {/* Check ATS Button */}
                                     <div className="flex justify-center">
 
-                                       <button
-    type="button"
-    onClick={handleATSCheck}
-    disabled={wordCount < 25 || isAnalyzing}
-    className={`mt-7 mb-5 inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ${
-        wordCount >= 25 && !isAnalyzing
-            ? "cursor-pointer bg-indigo-600 hover:bg-indigo-700 hover:shadow-md"
-            : "cursor-not-allowed bg-slate-300"
-    }`}
->
-    {isAnalyzing ? (
-        <>
-            <Loader2
-                size={18}
-                className="animate-spin"
-            />
-            ANALYZING RESUME...
-        </>
-    ) : (
-        <>
-            <BarChart3 size={18} />
-            CHECK ATS SCORE
-        </>
-    )}
-</button>
+                                        <button
+                                            type="button"
+                                            onClick={handleATSCheck}
+                                            disabled={wordCount < 25 || isAnalyzing}
+                                            className={`mt-7 mb-5 inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 ${wordCount >= 25 && !isAnalyzing
+                                                ? "cursor-pointer bg-indigo-600 hover:bg-indigo-700 hover:shadow-md"
+                                                : "cursor-not-allowed bg-slate-300"
+                                                }`}
+                                        >
+                                            {isAnalyzing ? (
+                                                <>
+                                                    <Loader2
+                                                        size={18}
+                                                        className="animate-spin"
+                                                    />
+                                                    ANALYZING RESUME...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <BarChart3 size={18} />
+                                                    CHECK ATS SCORE
+                                                </>
+                                            )}
+                                        </button>
+                                        {isAnalyzing && (
+                                            <div className="mt-3 flex items-center justify-center gap-2 text-xs text-slate-500">
+                                                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-indigo-500" />
+                                                Reading your resume and comparing it with the job description...
+                                            </div>
+                                        )}
 
                                     </div>
 
