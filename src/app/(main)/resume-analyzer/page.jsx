@@ -36,60 +36,31 @@ const ResumeAnalyzer = () => {
     }
 
     const handleATSCheck = async () => {
-
-        setIsAnalyzing(true);
-
         if (!resume || wordCount < 25) {
-            setIsAnalyzing(false);
             return;
         }
 
         try {
-
-            console.log("Starting ATS analysis...");
-
+            setIsAnalyzing(true);
             const formData = new FormData();
+            formData.append("resume", resume);
+            formData.append("jobDescription", jobDescription);
 
-            formData.append(
-                "resume",
-                resume
-            );
-
-            formData.append(
-                "jobDescription",
-                jobDescription
-            );
-
-            const response = await fetch(
-                "/api/resume-analyzer",
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
-
+            const response = await fetch("/api/resume-analyzer", {
+                method: "POST",
+                body: formData,
+            });
             const data = await response.json();
-
-            if (!response.ok) {
-                console.error(
-                    "ATS API Error:",
-                    data.error
+            if (!response.ok || !data.success) {
+                throw new Error(
+                    data.error || "Failed to analyze resume."
                 );
-
-                return;
             }
-
-            console.log(
-                "ATS RESULT:",
-                data
-            );
-
+            console.log("ATS RESULT:", data);
         } catch (error) {
-
-            console.error(
-                "ATS ERROR:",
-                error
-            );
+            console.error("ATS ERROR:", error);
+        } finally {
+            setIsAnalyzing(false);
         }
     };
 

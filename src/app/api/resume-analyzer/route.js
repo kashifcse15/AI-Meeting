@@ -61,61 +61,53 @@ export async function POST(request) {
                 {
                     role: "user",
                     content: `
-You are an expert ATS resume analyzer.
+Generate a JSON object that analyzes this resume against the job description.
 
-Analyze the resume against the provided job description.
-
-====================
-RESUME
-====================
-
+RESUME:
 ${resumeText}
 
-====================
-JOB DESCRIPTION
-====================
-
+JOB DESCRIPTION:
 ${jobDescription}
 
-====================
-ANALYSIS REQUIRED
-====================
+Evaluate the resume honestly. Only use information present in the resume.
 
-Evaluate the following:
+Return scores from 0 to 100.
 
-- Overall resume quality
-- ATS compatibility
-- Job relevance
-- Keyword matching
-- Formatting
-- Grammar and writing quality
-- Technical skills
-- Experience and projects
-- Strengths
-- Weaknesses
-- Missing keywords
-- Actionable improvement suggestions
+The JSON must contain:
 
-Important instructions:
+- overallScore
+- grade
+- summary
+- scores:
+    - formatting
+    - keywordMatch
+    - grammar
+    - jobRelevance
+    - experience
+    - skills
+- strengths: array of strings
+- weaknesses: array of strings
+- rejectionRisks: array of strings
+- missingKeywords: array of strings
+- suggestions: array of strings
 
-- Compare the resume specifically against the provided job description.
-- Only use information actually present in the resume.
-- Do not invent skills, experience, achievements, or qualifications.
-- Identify important skills and keywords from the job description that are missing from the resume.
-- Give practical and actionable suggestions.
-- Be objective and honest about weaknesses.
-- Do not give generic advice when a specific improvement can be identified.
-
-Return a clear and well-organized analysis.
-                    `,
+Do not invent experience, skills, qualifications, or achievements.
+`,
                 },
             ],
+
+            responseFormat: {
+                type: "json_object",
+            },
         });
 
-        const analysis = analysisResponse.message.content
-            .filter((item) => item.type === "text")
-            .map((item) => item.text)
-            .join("\n");
+        const analysisText =
+            analysisResponse.message.content
+                .filter((item) => item.type === "text")
+                .map((item) => item.text)
+                .join("");
+
+        const analysis = JSON.parse(analysisText);
 
         return Response.json({
             success: true,
