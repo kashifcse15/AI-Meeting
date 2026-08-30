@@ -78,13 +78,25 @@ The JSON must contain:
 - overallScore
 - grade
 - summary
-- scores:
-    - formatting
-    - keywordMatch
-    - grammar
-    - jobRelevance
-    - experience
-    - skills
+Score each category from 0 to 100:
+
+formatting:
+ATS readability, structure, headings, consistency, and parsing friendliness.
+
+keywordMatch:
+How well the resume's existing skills and terminology match the job description.
+
+grammar:
+Grammar, spelling, clarity, and professional writing.
+
+jobRelevance:
+How closely the candidate's existing experience/projects/skills align with the role.
+
+experience:
+Quality and relevance of demonstrated experience. Do not penalize a student simply for lacking professional experience if the resume contains relevant projects.
+
+skills:
+Technical skills relevant to the job description.
 - strengths: array of strings
 - weaknesses: array of strings
 - rejectionRisks: array of strings
@@ -106,6 +118,9 @@ Do not invent experience, skills, qualifications, or achievements.
                 .filter((item) => item.type === "text")
                 .map((item) => item.text)
                 .join("");
+        if (!analysisText) {
+            throw new Error("Cohere returned an empty analysis.");
+        }
 
         const analysis = JSON.parse(analysisText);
 
