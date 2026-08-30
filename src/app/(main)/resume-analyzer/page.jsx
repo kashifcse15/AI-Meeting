@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 import {
     FileText,
     UploadCloud,
@@ -22,6 +23,7 @@ const ResumeAnalyzer = () => {
     const [jobDescription, setJobDescription] = useState("");
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const wordCount = jobDescription.trim().split(/\s+/).filter(Boolean).length;
+    const router = useRouter();
 
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
@@ -51,12 +53,19 @@ const ResumeAnalyzer = () => {
                 body: formData,
             });
             const data = await response.json();
-            if (!response.ok || !data.success) {
-                throw new Error(
-                    data.error || "Failed to analyze resume."
-                );
-            }
-            console.log("ATS RESULT:", data);
+
+if (!response.ok || !data.success) {
+    throw new Error(
+        data.error || "Failed to analyze resume."
+    );
+}
+
+sessionStorage.setItem(
+    "resumeAnalysis",
+    JSON.stringify(data.analysis)
+);
+
+router.push("/resume-analysis");
         } catch (error) {
             console.error("ATS ERROR:", error);
         } finally {
