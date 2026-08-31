@@ -11,9 +11,30 @@ import {
     Target,
     TriangleAlert,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const ResumeAnalysis = () => {
-    const score = 84;
+    const [analysis, setAnalysis] = useState(null);
+
+useEffect(() => {
+    const storedAnalysis = sessionStorage.getItem(
+        "resumeAnalysis"
+    );
+
+    if (!storedAnalysis) {
+        return;
+    }
+
+    try {
+        setAnalysis(JSON.parse(storedAnalysis));
+    } catch (error) {
+        console.error(
+            "Failed to load resume analysis:",
+            error
+        );
+    }
+}, []);
+    const score = analysis.overallScore;
 
     // Circle calculations
     const radius = 72;
@@ -98,7 +119,7 @@ const ResumeAnalysis = () => {
                             </div>
 
                             <div className="mt-5 rounded-full bg-indigo-50 px-4 py-1.5 text-sm font-bold text-indigo-600">
-                                Grade A-
+                                Grade {analysis.grade}
                             </div>
 
                             <p className="mt-3 text-center text-xs text-slate-400">
@@ -120,19 +141,16 @@ const ResumeAnalysis = () => {
                                     </p>
 
                                     <h2 className="mt-1 text-xl font-semibold text-slate-900">
-                                        Strong resume with room for better job alignment
+                                       {analysis.summary}
                                     </h2>
                                 </div>
                             </div>
 
                             <p className="max-w-2xl text-sm leading-7 text-slate-600">
-                                Your resume demonstrates solid technical skills,
-                                relevant development projects, and strong
-                                foundational knowledge. The main opportunities
-                                are improving keyword alignment, strengthening
-                                measurable impact, and tailoring the resume
-                                more closely to the target role.
+                                {analysis.overallFeedback}
                             </p>
+
+                            
 
                             {/* Quick highlights */}
                             <div className="mt-7 grid gap-3 sm:grid-cols-2">
