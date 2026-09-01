@@ -8,7 +8,7 @@ import AnalysisHeader from "./_components/AnalysisHeader";
 import ScoreHero from "./_components/ScoreHero";
 import ScoreBreakdown from "./_components/ScoreBreakdown";
 import Strengths from "./_components/Strengths";
-import Weaknesses from "./_components/Weakness";
+import Weaknesses from "./_components/Weaknesses";
 import RejectionRisks from "./_components/RejectionRisks";
 import MissingKeywords from "./_components/MissingKeywords";
 import Recommendations from "./_components/Recommendations";
