@@ -55,12 +55,12 @@ export async function POST(request) {
         });
 
         const analysisResponse = await cohere.chat({
-            model: "command-a-plus-05-2026",
+    model: "command-a-plus-05-2026",
 
-            messages: [
-                {
-                    role: "user",
-                    content: `
+    messages: [
+        {
+            role: "user",
+            content: `
 Generate a JSON object that analyzes this resume against the job description.
 
 RESUME:
@@ -69,16 +69,73 @@ ${resumeText}
 JOB DESCRIPTION:
 ${jobDescription}
 
-Evaluate the resume honestly. Only use information present in the resume.
+You are an ATS resume evaluator and recruiter.
 
+Analyze ONLY the information explicitly present in the resume and compare it against the job description.
+
+Do not invent experience, skills, qualifications, achievements, projects, or technologies.
+
+IMPORTANT RULES:
+
+1. STRENGTHS
+Identify the strongest parts of the resume that match the job description.
+
+Return AT LEAST 1 strength whenever the resume contains any relevant skills, projects, experience, education, or achievements.
+
+Prioritize specific strengths rather than generic statements.
+
+2. WEAKNESSES
+Identify actual weaknesses or gaps in the resume for this specific job.
+
+Return AT LEAST 1 weakness whenever there is something that could reasonably be improved or is weaker compared with the job requirements.
+
+Do not invent weaknesses.
+
+3. MISSING KEYWORDS
+Compare the important technical skills, tools, technologies, concepts, qualifications, and role-specific terms in the job description against the resume.
+
+Return AT LEAST 1 relevant missing keyword whenever the job description contains important terms that are not explicitly present in the resume.
+
+Only include genuinely relevant missing keywords.
+
+Do NOT consider a keyword present just because it is related to another skill.
+
+Examples:
+- Manual testing does NOT mean Jest.
+- React does NOT mean Next.js.
+- AWS does NOT automatically mean Docker.
+- JavaScript does NOT automatically mean Node.js.
+- REST APIs do NOT automatically mean GraphQL.
+
+4. REJECTION RISKS
+Identify realistic reasons why this resume could be rejected for THIS PARTICULAR job.
+
+Return at least 1 risk when a meaningful mismatch exists.
+
+5. SUGGESTIONS
+Provide specific and actionable recommendations based on the weaknesses, missing keywords, and job requirements.
+
+Return at least 1 useful suggestion whenever there is something that could be improved.
+
+6. HONESTY
+Do not create problems just to fill an array.
+
+If there is genuinely nothing missing or nothing to improve, an array may be empty.
+
+However, when there are clear differences between the resume and job description, report them.
+
+7. KEYWORD MATCHING
+A keyword is considered PRESENT only if the resume explicitly contains that skill, technology, tool, concept, or equivalent clearly stated experience.
+
+Do not infer skills that are not explicitly demonstrated.
+
+8. EXPERIENCE
+Do not penalize students simply because they lack years of professional experience.
+
+Relevant internships, projects, academic work, and demonstrated technical experience should be considered.
+
+9. SCORING
 Return scores from 0 to 100.
-
-The JSON must contain:
-
-- overallScore
-- grade
-- summary
-Score each category from 0 to 100:
 
 formatting:
 ATS readability, structure, headings, consistency, and parsing friendliness.
@@ -90,28 +147,51 @@ grammar:
 Grammar, spelling, clarity, and professional writing.
 
 jobRelevance:
-How closely the candidate's existing experience/projects/skills align with the role.
+How closely the candidate's existing experience, projects, and skills align with the role.
 
 experience:
-Quality and relevance of demonstrated experience. Do not penalize a student simply for lacking professional experience if the resume contains relevant projects.
+Quality and relevance of demonstrated experience.
 
 skills:
 Technical skills relevant to the job description.
-- strengths: array of strings
-- weaknesses: array of strings
-- rejectionRisks: array of strings
-- missingKeywords: array of strings
-- suggestions: array of strings
 
-Do not invent experience, skills, qualifications, or achievements.
+overallScore:
+Overall ATS suitability for this specific job description.
+
+grade:
+Use a letter grade from A+ to F based on the overallScore.
+
+Return the following JSON fields:
+
+{
+    "overallScore": number,
+    "grade": "string",
+    "summary": "string",
+    "formatting": number,
+    "keywordMatch": number,
+    "grammar": number,
+    "jobRelevance": number,
+    "experience": number,
+    "skills": number,
+    "strengths": ["string"],
+    "weaknesses": ["string"],
+    "rejectionRisks": ["string"],
+    "missingKeywords": ["string"],
+    "suggestions": ["string"]
+}
+
+The response MUST be a valid JSON object.
+
+Do not return markdown.
+Do not return explanations outside the JSON.
 `,
-                },
-            ],
+        },
+    ],
 
-            responseFormat: {
-                type: "json_object",
-            },
-        });
+    responseFormat: {
+        type: "json_object",
+    },
+});
 
         const analysisText =
             analysisResponse.message.content
