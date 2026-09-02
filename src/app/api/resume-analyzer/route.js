@@ -37,6 +37,27 @@ export async function POST(request) {
                 { status: 400 }
             );
         }
+
+                const { data: dbUser, error: userError } =
+            await supabaseAdmin
+                .from("Users")
+                .select("id, credits")
+                .eq("email", email)
+                .single();
+
+        if (userError || !dbUser) {
+            console.error("Supabase User Error:", userError);
+
+            return Response.json(
+                {
+                    success: false,
+                    error: "User account not found.",
+                },
+                { status: 404 }
+            );
+        }
+
+        
         const formData = await request.formData();
 
         const resume = formData.get("resume");
