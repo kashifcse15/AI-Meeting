@@ -57,7 +57,19 @@ export async function POST(request) {
             );
         }
 
-        
+                const ATS_COST = 2;
+
+        if (dbUser.credits < ATS_COST) {
+            return Response.json(
+                {
+                    success: false,
+                    error: "You need at least 2 credits to analyze a resume.",
+                },
+                { status: 402 }
+            );
+        }
+
+
         const formData = await request.formData();
 
         const resume = formData.get("resume");
