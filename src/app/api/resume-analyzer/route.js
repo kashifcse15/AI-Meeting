@@ -266,6 +266,28 @@ Do not return explanations outside the JSON.
         }
 
         const analysis = JSON.parse(analysisText);
+                const { error: creditError } =
+            await supabaseAdmin
+                .from("Users")
+                .update({
+                    credits: dbUser.credits - ATS_COST,
+                })
+                .eq("id", dbUser.id);
+
+        if (creditError) {
+            console.error(
+                "Credit deduction error:",
+                creditError
+            );
+
+            return Response.json(
+                {
+                    success: false,
+                    error: "Analysis completed, but credits could not be deducted.",
+                },
+                { status: 500 }
+            );
+        }
 
         return Response.json({
             success: true,
