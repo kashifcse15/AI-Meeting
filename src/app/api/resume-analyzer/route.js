@@ -1,52 +1,43 @@
-import {currentUser} from "@clerk/nextjs";
-import {createClient} from "@supabase/supabase-js";
+import { supabase } from "@/services/supabaseClient";
 import { CohereClientV2 } from "cohere-ai";
 import PDFParser from "pdf2json";
 
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-);
 const cohere = new CohereClientV2({
     token: process.env.COHERE_API_KEY,
 });
 
 export async function POST(request) {
     try {
-                const clerkUser = await currentUser();
 
-        if (!clerkUser) {
+        const formData = await request.formData();
+
+        const resume = formData.get("resume");
+        const jobDescription = formData.get("jobDescription");
+        const email = formData.get("email");
+
+        if (!resume || !jobDescription || !email) {
             return Response.json(
                 {
                     success: false,
-                    error: "Unauthorized.",
-                },
-                { status: 401 }
-            );
-        }
-
-        const email =
-            clerkUser.emailAddresses?.[0]?.emailAddress;
-
-        if (!email) {
-            return Response.json(
-                {
-                    success: false,
-                    error: "User email not found.",
+                    error: "Resume, job description and email are required.",
                 },
                 { status: 400 }
             );
         }
 
-                const { data: dbUser, error: userError } =
-            await supabaseAdmin
+        // Get user from Supabase
+        const { data: dbUser, error: userError } =
+            await supabase
                 .from("Users")
                 .select("id, credits")
                 .eq("email", email)
                 .single();
 
         if (userError || !dbUser) {
-            console.error("Supabase User Error:", userError);
+            console.error(
+                "Supabase User Error:",
+                userError
+            );
 
             return Response.json(
                 {
@@ -57,8 +48,10 @@ export async function POST(request) {
             );
         }
 
-                const ATS_COST = 2;
+        // ATS costs 2 credits
+        const ATS_COST = 2;
 
+        // Check credits
         if (dbUser.credits < ATS_COST) {
             return Response.json(
                 {
@@ -66,22 +59,6 @@ export async function POST(request) {
                     error: "You need at least 2 credits to analyze a resume.",
                 },
                 { status: 402 }
-            );
-        }
-
-
-        const formData = await request.formData();
-
-        const resume = formData.get("resume");
-        const jobDescription = formData.get("jobDescription");
-
-        if (!resume || !jobDescription) {
-            return Response.json(
-                {
-                    success: false,
-                    error: "Resume and job description are required.",
-                },
-                { status: 400 }
             );
         }
 
@@ -117,13 +94,14 @@ export async function POST(request) {
             parser.parseBuffer(buffer);
         });
 
+        // Send resume + JD to Cohere
         const analysisResponse = await cohere.chat({
-    model: "command-a-plus-05-2026",
+            model: "command-a-plus-05-2026",
 
-    messages: [
-        {
-            role: "user",
-            content: `
+            messages: [
+                {
+                    role: "user",
+                    content: `
 Generate a JSON object that analyzes this resume against the job description.
 
 RESUME:
@@ -210,7 +188,7 @@ grammar:
 Grammar, spelling, clarity, and professional writing.
 
 jobRelevance:
-How closely the candidate's existing experience, projects, and skills align with the role.
+How closely the candidate's existing experience, projects, and skills align with the job description.
 
 experience:
 Quality and relevance of demonstrated experience.
@@ -248,26 +226,31 @@ The response MUST be a valid JSON object.
 Do not return markdown.
 Do not return explanations outside the JSON.
 `,
-        },
-    ],
+                },
+            ],
 
-    responseFormat: {
-        type: "json_object",
-    },
-});
+            responseFormat: {
+                type: "json_object",
+            },
+        });
 
+        // Extract Cohere response
         const analysisText =
             analysisResponse.message.content
                 .filter((item) => item.type === "text")
                 .map((item) => item.text)
                 .join("");
+
         if (!analysisText) {
             throw new Error("Cohere returned an empty analysis.");
         }
 
+        // Convert JSON string to object
         const analysis = JSON.parse(analysisText);
-                const { error: creditError } =
-            await supabaseAdmin
+
+        // Deduct 2 credits
+        const { error: creditError } =
+            await supabase
                 .from("Users")
                 .update({
                     credits: dbUser.credits - ATS_COST,
@@ -289,13 +272,18 @@ Do not return explanations outside the JSON.
             );
         }
 
+        // Return result
         return Response.json({
             success: true,
             analysis,
+            creditsRemaining: dbUser.credits - ATS_COST,
         });
 
     } catch (error) {
-        console.error("Resume Analyzer Error:", error);
+        console.error(
+            "Resume Analyzer Error:",
+            error
+        );
 
         return Response.json(
             {
@@ -308,3 +296,5 @@ Do not return explanations outside the JSON.
         );
     }
 }
+    
+    

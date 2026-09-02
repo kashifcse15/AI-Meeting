@@ -17,6 +17,8 @@ import {
     Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import {useUser} from "@clerk/nextjs";
+
 
 const ResumeAnalyzer = () => {
     const [resume, setResume] = useState(null);
@@ -24,6 +26,7 @@ const ResumeAnalyzer = () => {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const wordCount = jobDescription.trim().split(/\s+/).filter(Boolean).length;
     const router = useRouter();
+    const { user } = useUser();
 
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
@@ -47,6 +50,7 @@ const ResumeAnalyzer = () => {
             const formData = new FormData();
             formData.append("resume", resume);
             formData.append("jobDescription", jobDescription);
+            formData.append("email",user.primaryEmailAddress.emailAddress);
 
             const response = await fetch("/api/resume-analyzer", {
                 method: "POST",
