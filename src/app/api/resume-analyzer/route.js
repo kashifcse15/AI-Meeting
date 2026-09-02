@@ -1,12 +1,42 @@
+import {currentUser} from "@clerk/nextjs";
+import {createClient} from "@supabase/supabase-js";
 import { CohereClientV2 } from "cohere-ai";
 import PDFParser from "pdf2json";
 
+const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 const cohere = new CohereClientV2({
     token: process.env.COHERE_API_KEY,
 });
 
 export async function POST(request) {
     try {
+                const clerkUser = await currentUser();
+
+        if (!clerkUser) {
+            return Response.json(
+                {
+                    success: false,
+                    error: "Unauthorized.",
+                },
+                { status: 401 }
+            );
+        }
+
+        const email =
+            clerkUser.emailAddresses?.[0]?.emailAddress;
+
+        if (!email) {
+            return Response.json(
+                {
+                    success: false,
+                    error: "User email not found.",
+                },
+                { status: 400 }
+            );
+        }
         const formData = await request.formData();
 
         const resume = formData.get("resume");
