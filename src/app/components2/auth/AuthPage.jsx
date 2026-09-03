@@ -4,10 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Button from "../../components/button";
 import { supabase } from "@/services/supabaseClient";
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
   "/auth-slider/download.jpg",
@@ -21,7 +18,6 @@ const slides = [
   "/auth-slider/download.jpg",
   "/auth-slider/image_3.jpg",
 ];
-
 
 const Login = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -51,110 +47,213 @@ const Login = () => {
   };
 
   return (
-    <main
-      className="relative min-h-screen overflow-hidden"
-      style={{
-        backgroundImage: "url('/AuthBg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      {/* Dark / soft overlay */}
-      <div className="absolute inset-0 bg-black/25" />
+    <main className="fixed inset-0 h-screen w-full overflow-hidden">
 
-      {/* Main content */}
-      <div className="relative z-10 flex min-h-screen flex-col items-center px-5 py-8 mt-33">
+      {/* ================= BACKGROUND ================= */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/AuthBG.jpeg')",
+        }}
+      />
 
-       
+      {/* ================= CONTENT ================= */}
+      <div className="relative z-10 h-full w-full">
 
-        {/* SWIPER */}
-        <div className="w-full max-w-2xl">
+        {/* ================= SWIPER ================= */}
+        <div
+          className="
+            absolute
+            left-1/2
+            top-[14vh]
+            w-[88vw]
+            max-w-[680px]
+            -translate-x-1/2
+          "
+        >
+          {/* Slider image */}
+          <div
+            className="
+              relative
+              overflow-hidden
+              rounded-2xl
+              border
+              border-white/70
+              shadow-[0_18px_50px_rgba(0,0,0,0.18)]
+            "
+          >
+            <div className="relative aspect-[17/8.2] w-full">
 
-          <div className="relative overflow-hidden rounded-2xl border border-white/50 bg-black/10 shadow-2xl backdrop-blur-[2px]">
-
-            {/* Image */}
-            <div className="relative aspect-[16/8] w-full">
               <Image
                 key={slides[currentSlide]}
                 src={slides[currentSlide]}
                 alt={`ArtemusXR image ${currentSlide + 1}`}
                 fill
                 priority={currentSlide === 0}
-                className="object-cover transition-opacity duration-500"
-                sizes="(max-width: 768px) 100vw, 672px"
+                sizes="(max-width: 768px) 88vw, 680px"
+                className="object-cover"
               />
 
-              {/* Slight image gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-            </div>
+              {/* Slight shadow over image */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent" />
 
-            {/* Previous */}
-            <button
-              type="button"
-              onClick={previousSlide}
-              aria-label="Previous image"
-              className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
-            >
-              <ChevronLeft size={22} />
-            </button>
+              {/* LEFT ARROW */}
+              <button
+                type="button"
+                onClick={previousSlide}
+                aria-label="Previous image"
+                className="
+                  absolute
+                  left-4
+                  top-1/2
+                  flex
+                  h-10
+                  w-10
+                  -translate-y-1/2
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-white/90
+                  text-slate-800
+                  shadow-lg
+                  backdrop-blur-sm
+                  transition-all
+                  duration-200
+                  hover:scale-110
+                  hover:bg-white
+                  active:scale-95
+                "
+              >
+                <ChevronLeft size={21} />
+              </button>
 
-            {/* Next */}
-            <button
-              type="button"
-              onClick={nextSlide}
-              aria-label="Next image"
-              className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
-            >
-              <ChevronRight size={22} />
-            </button>
+              {/* RIGHT ARROW */}
+              <button
+                type="button"
+                onClick={nextSlide}
+                aria-label="Next image"
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  flex
+                  h-10
+                  w-10
+                  -translate-y-1/2
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-white/90
+                  text-slate-800
+                  shadow-lg
+                  backdrop-blur-sm
+                  transition-all
+                  duration-200
+                  hover:scale-110
+                  hover:bg-white
+                  active:scale-95
+                "
+              >
+                <ChevronRight size={21} />
+              </button>
 
-            {/* Counter */}
-            <div className="absolute bottom-4 right-4 rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
-              {currentSlide + 1} / {slides.length}
+              {/* COUNTER */}
+              <div
+                className="
+                  absolute
+                  bottom-3
+                  right-3
+                  rounded-full
+                  bg-black/50
+                  px-3
+                  py-1
+                  text-[11px]
+                  font-medium
+                  tracking-wide
+                  text-white
+                  backdrop-blur-md
+                "
+              >
+                {String(currentSlide + 1).padStart(2, "0")} /{" "}
+                {String(slides.length).padStart(2, "0")}
+              </div>
             </div>
           </div>
 
-          {/* Dots */}
-          <div className="mt-4 flex justify-center gap-1.5">
+          {/* ================= DOTS ================= */}
+          <div className="mt-3 flex justify-center gap-1.5">
             {slides.map((_, index) => (
               <button
                 key={index}
                 type="button"
                 onClick={() => goToSlide(index)}
-                aria-label={`Go to image ${index + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  currentSlide === index
-                    ? "w-8 bg-white shadow"
-                    : "w-1.5 bg-white/50 hover:bg-white/80"
-                }`}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`
+                  h-1.5
+                  rounded-full
+                  transition-all
+                  duration-300
+                  ${
+                    currentSlide === index
+                      ? "w-7 bg-slate-800"
+                      : "w-1.5 bg-slate-500/40 hover:bg-slate-700/60"
+                  }
+                `}
               />
             ))}
           </div>
         </div>
 
-        {/* WELCOME TEXT */}
-        <div className="mt-7 text-center text-black drop-shadow-lg">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Welcome to ArtemusXR
-          </h1>
 
-          <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-black/90 sm:text-base">
-            Practice smarter, prepare better, and walk into your next
-            interview with confidence.
-          </p>
-        </div>
+        {/* ================================================= */}
+        {/* LOGIN BUTTON                                      */}
+        {/* ================================================= */}
 
-        {/* LOGIN BUTTON */}
-        <div className="mt-6 w-full max-w-2xl">
+        <div
+          className="
+            absolute
+            left-1/2
+            top-[86vh]
+            w-[88vw]
+            max-w-[680px]
+            -translate-x-1/2
+          "
+        >
           <Button
-            className="h-12 w-full cursor-pointer rounded-xl bg-white text-sm font-semibold text-slate-900 shadow-xl transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/95 hover:shadow-2xl"
             onClick={signInWithGoogle}
+            className="
+              h-11
+              w-full
+              cursor-pointer
+              rounded-xl
+              border
+              border-white/80
+              bg-blue-600
+              text-sm
+              font-semibold
+              text-white
+              shadow-[0_10px_30px_rgba(0,0,0,0.18)]
+              transition-all
+              duration-200
+              hover:-translate-y-0.5
+              hover:bg-blue-700
+              hover:shadow-[0_15px_35px_rgba(0,0,0,0.22)]
+              active:translate-y-0
+            "
           >
             Login with Google
           </Button>
 
-          <p className="mt-3 text-center text-xs text-white/75 drop-shadow">
+          <p
+            className="
+              mt-1.5
+              text-center
+              text-[10px]
+              font-medium
+              tracking-wide
+              text-slate-600/70
+            "
+          >
             Secure authentication powered by Google
           </p>
         </div>
