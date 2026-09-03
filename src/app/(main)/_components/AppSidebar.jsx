@@ -23,11 +23,11 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="flex items-center justify-center mt-2">
         <Image
-          src="/MockPilot.jpeg"
+          src="/ArtemusXRNav.jpeg"
           alt="logo"
-          width={200}
-          height={100}
-          className="w-[150px]"
+          width={100}
+          height={200}
+          className="w-[250px]"
           priority
         />
 
