@@ -1,5 +1,7 @@
 "use client";
 
+import { useContext } from "react";
+import { UserDetailContext } from "@/context/UserDetailContext";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
@@ -17,8 +19,6 @@ import {
     Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import {useUser} from "@clerk/nextjs";
-
 
 const ResumeAnalyzer = () => {
     const [resume, setResume] = useState(null);
@@ -26,7 +26,7 @@ const ResumeAnalyzer = () => {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const wordCount = jobDescription.trim().split(/\s+/).filter(Boolean).length;
     const router = useRouter();
-    const { user } = useUser();
+    const { user } = useContext(UserDetailContext);
 
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
@@ -41,7 +41,7 @@ const ResumeAnalyzer = () => {
     }
 
     const handleATSCheck = async () => {
-        if (!resume || wordCount < 25) {
+        if (!resume || wordCount < 25 || !user) {
             return;
         }
 
@@ -50,7 +50,7 @@ const ResumeAnalyzer = () => {
             const formData = new FormData();
             formData.append("resume", resume);
             formData.append("jobDescription", jobDescription);
-            formData.append("email",user.primaryEmailAddress.emailAddress);
+            formData.append("email", user.email);
 
             const response = await fetch("/api/resume-analyzer", {
                 method: "POST",
