@@ -211,7 +211,7 @@ const StartInterview = () => {
 
           <div >
             <Image
-              src="/link.jpg"
+              src="/AIPFP.jpg"
               alt="AI Recruiter"
               width={100}
               height={100}

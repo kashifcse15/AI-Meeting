@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import Header from "./_components/Header";
 import Image from "next/image";
 import {
   Clock,
@@ -104,7 +103,6 @@ const Interview = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <Header />
 
       <div className="mx-auto mt-12 max-w-3xl px-6">
         <div className="rounded-3xl border border-gray-200 bg-white p-10 shadow-xl">
@@ -135,7 +133,7 @@ const Interview = () => {
           {/* Illustration */}
           <div className="mt-8 flex justify-center">
             <Image
-              src="/link.jpg"
+              src="/Meeting.jpg"
               alt="Interview"
               width={280}
               height={280}
