@@ -6,7 +6,7 @@ import {
     TrendingUp,
 } from "lucide-react";
 
-const ScoreBreakdown = ({ analysis }) => {
+const ScoreBreakDown = ({ analysis }) => {
     const formatting = Number(analysis?.formatting) || 0;
     const keywordMatch = Number(analysis?.keywordMatch) || 0;
     const grammar = Number(analysis?.grammar) || 0;
@@ -166,4 +166,4 @@ const ScoreBreakdown = ({ analysis }) => {
     );
 };
 
-export default ScoreBreakdown;
+export default ScoreBreakDown;

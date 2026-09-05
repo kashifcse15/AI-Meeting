@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import AnalysisHeader from "./_components/AnalysisHeader";
 import ScoreHero from "./_components/ScoreHero";
-import ScoreBreakdown from "./_components/ScoreBreakdown";
+import ScoreBreakDown from "./_components/ScoreBreakDown";
 import Strengths from "./_components/Strengths";
 import Weaknesses from "./_components/Weaknesses";
 import RejectionRisks from "./_components/RejectionRisks";
@@ -136,7 +136,7 @@ const ResumeAnalysis = () => {
 
                 {/* Score Breakdown */}
 
-                <ScoreBreakdown
+                <ScoreBreakDown
                     analysis={analysis}
                 />
 
