@@ -112,7 +112,7 @@ const Interview = () => {
           {/* Logo */}
           <div className="flex justify-center">
             <Image
-              src="/MockPilot.jpeg"
+              src="/ArtemusXRNav.jpeg"
               alt="logo"
               width={140}
               height={140}

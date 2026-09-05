@@ -8,7 +8,7 @@ const InterviewCompleted = () => {
       {/* Navbar */}
       <header className="flex items-center justify-between px-8 py-6 lg:px-20">
         <Image
-          src="/MockPilot.jpeg"
+          src="/ArtemusXRNav.jpeg"
           alt="logo"
           width={150}
           height={45}

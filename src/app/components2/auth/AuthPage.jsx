@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Button from "../../components/button";
 import { supabase } from "@/services/supabaseClient";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const slides = [
   "/auth-slider/download.jpg",
@@ -19,12 +20,17 @@ const slides = [
   "/auth-slider/image_3.jpg",
 ];
 
+
 const Login = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const router = useRouter(); 
 
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+       options: {
+      redirectTo: `${window.location.origin}/dashboard`,
+    },
     });
 
     if (error) {
