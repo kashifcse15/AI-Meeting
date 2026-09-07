@@ -69,6 +69,8 @@ const StartInterview = () => {
         questionList
       );
 
+      console.log("🔥 VAPI OPTIONS:", assistantOptions);
+
       await vapiRef.current.start(assistantOptions);
     }
     catch (err) {
@@ -97,7 +99,7 @@ const StartInterview = () => {
       setActiveUser(true);
     };
 
-    
+
     const handleCallEnd = async () => {
       setIsRunning(false);
       toast("Interview Ended");
@@ -108,6 +110,11 @@ const StartInterview = () => {
       if (message?.conversation) {
         conversationRef.current = message.conversation;
       }
+    };
+    console.log("🔥 VAPI MESSAGE:", handleMessage);
+
+    const handleVapiError = (error) => {
+      console.error("🔥 VAPI ERROR:", error);
     };
 
     vapi.on("call-start", handleCallStart);
