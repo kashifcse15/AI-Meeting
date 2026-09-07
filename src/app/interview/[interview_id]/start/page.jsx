@@ -114,11 +114,21 @@ console.log(
       // await GenerateFeedback();
     };
     const handleMessage = (message) => {
-console.log("🔥 VAPI MESSAGE OBJECT:", message);
-      if (message?.conversation) {
-        conversationRef.current = message.conversation;
-      }
-    };
+  console.log("🔥 VAPI MESSAGE OBJECT:", message);
+
+  if (message?.conversation) {
+    conversationRef.current = message.conversation;
+  }
+
+  if (message?.type === "transcript") {
+    console.log(
+      "🎤 TRANSCRIPT:",
+      message.role,
+      message.transcriptType,
+      message.transcript
+    );
+  }
+};
     console.log("🔥 VAPI MESSAGE:", handleMessage);
 
     const handleVapiError = (error) => {
