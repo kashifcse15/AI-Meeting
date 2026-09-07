@@ -55,9 +55,23 @@ const StartInterview = () => {
 
   const startCall = async () => {
     try {
-      await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
+     const stream = await navigator.mediaDevices.getUserMedia({
+  audio: true,
+});
+
+console.log("🎤 MICROPHONE STREAM:", stream);
+console.log(
+  "🎤 MICROPHONE TRACKS:",
+  stream.getAudioTracks()
+);
+console.log(
+  "🎤 MICROPHONE ENABLED:",
+  stream.getAudioTracks()[0]?.enabled
+);
+console.log(
+  "🎤 MICROPHONE STATE:",
+  stream.getAudioTracks()[0]?.readyState
+);
       const questionList =
         interviewInfo?.interviewData?.questionList
           ?.map((item, index) => `${index + 1}. ${item.question}`)
