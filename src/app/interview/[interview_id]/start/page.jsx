@@ -101,9 +101,10 @@ const StartInterview = () => {
 
 
     const handleCallEnd = async () => {
+      console.log("🔥 VAPI CALL ENDED");
       setIsRunning(false);
       toast("Interview Ended");
-      await GenerateFeedback();
+      // await GenerateFeedback();
     };
     const handleMessage = (message) => {
 
