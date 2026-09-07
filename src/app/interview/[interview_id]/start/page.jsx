@@ -149,11 +149,15 @@ console.log(
       console.error("🔥 VAPI ERROR:", error);
     };
 
+    vapi.on("volume-level", (volume) => {
+  console.log("🎤 VAPI VOLUME:", volume);
+});
     vapi.on("call-start", handleCallStart);
     vapi.on("speech-start", handleSpeechStart);
     vapi.on("speech-end", handleSpeechEnd);
     vapi.on("call-end", handleCallEnd);
     vapi.on("message", handleMessage);
+    vapi.off("volume-level", handleVolumeLevel);
     vapi.off("error", handleVapiError);
 
     return () => {
