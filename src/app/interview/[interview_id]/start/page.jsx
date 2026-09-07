@@ -128,36 +128,22 @@ console.log(
       // await GenerateFeedback();
     };
     const handleMessage = (message) => {
-  console.log("🔥 VAPI MESSAGE OBJECT:", message);
 
   if (message?.conversation) {
     conversationRef.current = message.conversation;
   }
 
-  if (message?.type === "transcript") {
-    console.log(
-      "🎤 TRANSCRIPT:",
-      message.role,
-      message.transcriptType,
-      message.transcript
-    );
-  }
 };
-    console.log("🔥 VAPI MESSAGE:", handleMessage);
 
     const handleVapiError = (error) => {
       console.error("🔥 VAPI ERROR:", error);
     };
 
-    vapi.on("volume-level", (volume) => {
-  console.log("🎤 VAPI VOLUME:", volume);
-});
     vapi.on("call-start", handleCallStart);
     vapi.on("speech-start", handleSpeechStart);
     vapi.on("speech-end", handleSpeechEnd);
     vapi.on("call-end", handleCallEnd);
     vapi.on("message", handleMessage);
-    vapi.off("volume-level", handleVolumeLevel);
     vapi.off("error", handleVapiError);
 
     return () => {
