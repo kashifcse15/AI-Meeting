@@ -78,18 +78,12 @@ console.log(
           .join("\n") || "";
 
           console.log("🔥 INTERVIEW INFO:", interviewInfo);
-console.log("🔥 QUESTION LIST:", questionList);
 
       const assistantOptions = createAssistantOptions(
         interviewInfo,
         questionList
       );
 
-      console.log("🔥 VAPI OPTIONS:", assistantOptions);
-console.log(
-  "🔥 VAPI SYSTEM PROMPT:",
-  assistantOptions?.model?.messages?.[0]?.content
-);
 
       await vapiRef.current.start(assistantOptions);
     }
@@ -122,10 +116,9 @@ console.log(
 
     const handleCallEnd = async () => {
       console.log("🔥 VAPI CALL ENDED");
-        console.log("🔥🔥 CONVERSATION:", conversationRef.current);
       setIsRunning(false);
       toast("Interview Ended");
-      // await GenerateFeedback();
+      await GenerateFeedback();
     };
     const handleMessage = (message) => {
 
