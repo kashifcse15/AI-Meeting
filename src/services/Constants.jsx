@@ -21,11 +21,6 @@ export const SideBarOptions=[
         icon:WalletCards,
         path:"/billing"
     },
-    {
-        name:"ATS Resume Analyzer",
-        icon:BriefcaseBusinessIcon,
-        path:"/resume-analyzer"
-    }
 ]
 
 export const InterviewType=[
