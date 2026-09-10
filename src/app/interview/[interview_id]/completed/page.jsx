@@ -45,7 +45,7 @@ const InterviewCompleted = () => {
         {/* Hero Image */}
         <div className="mt-12 w-full overflow-hidden rounded-3xl bg-white p-4 shadow-2xl">
           <Image
-            src="/completed.png"
+            src="/AIPFP.jpg"
             alt="Interview Completed"
             width={1200}
             height={650}
