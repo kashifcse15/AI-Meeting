@@ -8,16 +8,16 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const slides = [
-  "/auth-slider/download.jpg",
-  "/auth-slider/image_3.jpg",
-  "/auth-slider/Madrid.jpg",
-  "/auth-slider/spotify.jpeg",
-  "/auth-slider/completed.png",
-  "/auth-slider/link.jpg",
-  "/auth-slider/butterfly.jpeg",
-  "/auth-slider/Madrid.jpg",
-  "/auth-slider/download.jpg",
-  "/auth-slider/image_3.jpg",
+  "/auth-slider/page1.jpg",
+  "/auth-slider/page2.jpg",
+  "/auth-slider/page3.jpg",
+  "/auth-slider/page4.jpeg",
+  "/auth-slider/page5.jpeg",
+  "/auth-slider/page6.jpeg",
+  "/auth-slider/page7.jpeg",
+  "/auth-slider/page8.jpg",
+  "/auth-slider/page9.jpg",
+  "/auth-slider/page10.jpg",
 ];
 
 
