@@ -1,6 +1,10 @@
+import AboutJob from "./_components/AboutJob"
 const PhoneScreeningPage = () => {
     return(
-        <h1>Phone Screening Page</h1>
+    
+            <AboutJob />
+            
+        
     )
 }
 export default PhoneScreeningPage
