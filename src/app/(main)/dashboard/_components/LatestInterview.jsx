@@ -37,59 +37,31 @@ const LatestInterview = () => {
   };
 
   return (
-    <div className="my-6 w-full">
+    <div className="my-8 sm:my-10">
 
-      {/* Section Header */}
-      <div className="mt-8 mb-5">
+      {/* Section Heading */}
+      <div className="mb-5 sm:mb-6">
 
-        <h2 className="
-          text-2xl
-          font-bold
-          leading-tight
-          text-gray-800
-          sm:text-3xl
-        ">
+        <h2 className="text-2xl font-bold leading-tight text-gray-900 sm:text-3xl">
           Previously Created Interviews
         </h2>
 
-        <p className="
-          mt-2
-          text-sm
-          leading-6
-          text-gray-500
-          sm:text-base
-        ">
+        {/* Hide description on mobile */}
+        <p className="mt-2 hidden text-sm leading-6 text-gray-500 sm:block sm:text-base">
           View, manage and continue your AI interview sessions.
         </p>
 
       </div>
 
       {/* Empty State */}
-      {interviewList.length === 0 && (
-        <div className="
-          mt-5
-          flex
-          flex-col
-          items-center
-          gap-3
-          rounded-xl
-          border
-          border-gray-300
-          bg-white
-          px-5
-          py-8
-          text-center
-        ">
+      {interviewList?.length === 0 && (
+        <div className="mt-5 flex flex-col items-center gap-3 rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
 
           <VideoIcon className="h-10 w-10 text-primary" />
 
-          <h2 className="font-medium text-gray-800">
-            You don't have any interviews yet.
+          <h2 className="text-base font-semibold text-gray-800">
+            You don't have any interviews created yet.
           </h2>
-
-          <p className="text-sm text-gray-500">
-            Create your first AI-powered interview.
-          </p>
 
           <Button
             onClick={() =>
@@ -104,21 +76,16 @@ const LatestInterview = () => {
       )}
 
       {/* Interview Cards */}
-      {interviewList.length > 0 && (
-        <div className="
-          mt-5
-          grid
-          grid-cols-1
-          gap-5
-          md:grid-cols-2
-          xl:grid-cols-3
-        ">
+      {interviewList && interviewList.length > 0 && (
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:mt-6 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
+
           {interviewList.map((interview, index) => (
             <InterviewCard
               key={interview.id ?? index}
               interview={interview}
             />
           ))}
+
         </div>
       )}
 
