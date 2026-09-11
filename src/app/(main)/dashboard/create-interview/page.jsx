@@ -18,7 +18,7 @@ const CreateInterviews = () => {
   const [formData, setFormData] = useState({});
   const [interviewId, setInterviewId] = useState("");
   const [questionCount, setQuestionCount] = useState(0);
-  const {user}=useUser();
+  const { user } = useUser();
 
   const onHandleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -28,10 +28,11 @@ const CreateInterviews = () => {
   };
 
   const onGoToNext = () => {
-    if(user?.credits<=0){
-      toast('Out of Interviews , Buy Credits to Continue');
+    if (user?.credits <= 0) {
+      toast("Out of Interviews, Buy Credits to Continue");
       return;
     }
+
     if (
       !formData?.jobPosition ||
       !formData?.jobDescription ||
@@ -44,27 +45,36 @@ const CreateInterviews = () => {
     setStep(2);
   };
 
-  const onCreateLink = (interview_id,count) => {
+  const onCreateLink = (interview_id, count) => {
     setInterviewId(interview_id);
-  setQuestionCount(count);
-  setStep(3);
+    setQuestionCount(count);
+    setStep(3);
   };
 
   return (
-    <div className="mt-2 px-10 md:px-24 lg:px-44 xl:px-56">
-      <div className="flex items-center gap-5">
+    <div className="w-full px-3 py-2 sm:px-6 md:px-12 lg:px-24 xl:px-40">
+
+      {/* Header */}
+      <div className="flex items-center gap-3 sm:gap-5">
+
         <ArrowLeft
           onClick={() => router.back()}
-          className="cursor-pointer"
+          className="h-5 w-5 shrink-0 cursor-pointer sm:h-6 sm:w-6"
         />
 
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-xl font-bold leading-tight text-gray-900 sm:text-2xl">
           Create New Interview
         </h2>
+
       </div>
 
-      <Progress className="my-5 mt-4" value={step * 33.33} />
+      {/* Progress */}
+      <Progress
+        className="my-4 h-1.5 sm:my-5"
+        value={step * 33.33}
+      />
 
+      {/* Steps */}
       {step === 1 ? (
         <Form
           onHandleInputChange={onHandleInputChange}
@@ -79,9 +89,10 @@ const CreateInterviews = () => {
         <InterviewLink
           formData={formData}
           interview_id={interviewId}
-           questionCount={questionCount}
+          questionCount={questionCount}
         />
       )}
+
     </div>
   );
 };

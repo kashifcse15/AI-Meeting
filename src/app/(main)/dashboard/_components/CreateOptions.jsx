@@ -33,9 +33,9 @@ const CreateOptions = () => {
           <Video className="h-5 w-5 sm:h-6 sm:w-6" />
         </div>
 
-        <h2 className="mt-4 text-lg font-bold text-gray-900 sm:mt-5 sm:text-2xl">
-          Create New Interview
-        </h2>
+        <h2 className="text-xl font-bold leading-tight text-gray-900 sm:text-2xl">
+  Create New Interview
+</h2>
 
         <p className="mt-1 text-sm leading-5 text-gray-500 sm:mt-2 sm:text-base sm:leading-6">
           Create AI interviews and schedule them with candidates.
