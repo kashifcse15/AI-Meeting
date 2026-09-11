@@ -1,141 +1,253 @@
-import Button from '@/app/components/button'
-import { Input } from '@/components/ui/input'
-import {CircleCheck, Clock, Clock10Icon, CopyIcon, ListCollapse, Mail,MessageCircle,Send,Copy, Plus, ArrowLeft, BriefcaseBusiness} from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
-import {toast} from 'sonner'
+"use client";
+
+import { Input } from "@/components/ui/input";
+import {
+  CircleCheck,
+  Clock,
+  CopyIcon,
+  ListCollapse,
+  Mail,
+  MessageCircle,
+  Send,
+  Copy,
+  Plus,
+  ArrowLeft,
+  BriefcaseBusiness,
+} from "lucide-react";
+import Link from "next/link";
+import React from "react";
+import { toast } from "sonner";
 
 const InterviewLink = ({ interview_id, formData, questionCount }) => {
-    const url = `${process.env.NEXT_PUBLIC_HOST_URL}/interview/${interview_id}`;
-    const GetInterviewURL = () => {
-        return url;
-    }
-    const onCopyLink=async()=>{
-        await navigator.clipboard.writeText(url);
-        toast.success("Interview link copied successfully!");
-    }
-    const onSend = async () => {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: "AI Recruiter Interview",
-            text: "Join my AI interview!",
-            url,
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        await navigator.clipboard.writeText(url);
-        toast.success("Interview link copied!");
+  const url = `${process.env.NEXT_PUBLIC_HOST_URL}/interview/${interview_id}`;
+
+  const onCopyLink = async () => {
+    await navigator.clipboard.writeText(url);
+    toast.success("Interview link copied successfully!");
+  };
+
+  const onSend = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "AI Recruiter Interview",
+          text: "Join my AI interview!",
+          url,
+        });
+      } catch (err) {
+        console.log(err);
       }
-    };
-    return (
-        <div className='flex flex-col items-center justify-center mt-10'>
-            <div className='w-[50px] h-[50px]'>
-                <CircleCheck className="text-green-500 w-20 h-20" />
-            </div>
-            <h2 className='font-bold text-lg mt-10'>Your AI Interview is Ready !</h2>
-            <p className='mt-3'>Share this link with your candidates to start the interview process</p>
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success("Interview link copied!");
+    }
+  };
 
-            <div className="w-full mt-8 rounded-2xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h2 className="text-lg font-bold text-gray-800">
-                            Interview Link
-                        </h2>
-                        <p className="mt-1 text-sm text-gray-500">
-                            Share this link with the candidate to start the interview.
-                        </p>
-                    </div>
+  return (
+    <div className="flex w-full flex-col items-center justify-center py-6 sm:py-10">
 
-                    <span className="rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-semibold text-emerald-700 border border-emerald-200">
-                        ⏳ Expires in 30 Days
-                    </span>
-                </div>
+      {/* Success Icon */}
+      <div className="flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
+        <CircleCheck className="h-16 w-16 text-green-500 sm:h-20 sm:w-20" />
+      </div>
 
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Input
-                        className="h-11 flex-1 rounded-xl border-gray-300 bg-white text-gray-700 cursor-crosshair"
-                        value={url}
-                        readOnly
-                    />
+      {/* Heading */}
+      <h2 className="mt-6 text-center text-xl font-bold text-gray-900 sm:mt-8 sm:text-2xl">
+        Your AI Interview is Ready!
+      </h2>
 
-                    <button onClick={()=>onCopyLink() }
-                        className="flex h-11 items-center justify-center gap-2 cursor-grab rounded-xl bg-blue-600 px-6 font-medium text-white transition-all duration-200 hover:bg-blue-700 active:scale-95"
-                    >
-                        <CopyIcon className="h-4 w-4 " />
-                        Copy Link
-                    </button>
-                </div>
-                <div className="mt-5 flex gap-4">
-                    <div className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
-                        <Clock className="h-5 w-5 text-blue-600" />
-                        <span className="font-medium">{formData?.duration} min</span>
-                    </div>
+      <p className="mt-2 max-w-xl px-4 text-center text-sm leading-6 text-gray-600 sm:text-base">
+        Share this link with your candidates to start the interview process.
+      </p>
 
-                    <div className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
-                        <ListCollapse className="h-5 w-5 text-green-600" />
-                        <span className="font-medium">{questionCount} Questions</span>
-                    </div>
 
-                    <div className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2">
-                        <BriefcaseBusiness className="h-5 w-5 text-red-600" />
-                        <span className="font-medium">Role : {formData?.jobPosition}</span>
-                    </div>
-                </div>
+      {/* Main Card */}
+      <div className="mt-6 w-full rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-4 shadow-sm sm:mt-8 sm:p-6">
 
-                <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <h2 className="mb-4 text-lg font-semibold text-gray-800">
-                        Share Via
-                    </h2>
+        {/* Card Header */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 
-                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="min-w-0">
+            <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
+              Interview Link
+            </h2>
 
-                        <button onClick={()=>onSend()} className="flex flex-col items-center justify-center cursor-pointer rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
-                            <Mail className="mb-2 h-7 w-7 text-red-500" />
-                            <span className="text-sm font-medium">Email</span>
-                        </button>
+            <p className="mt-1 max-w-md text-sm leading-5 text-gray-500">
+              Share this link with the candidate to start the interview.
+            </p>
+          </div>
 
-                        <button onClick={()=>onSend()} className="flex flex-col items-center justify-center cursor-pointer rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
-                            <Send className="mb-2 h-7 w-7 text-sky-500" />
-                            <span className="text-sm font-medium">Telegram</span>
-                        </button>
+          {/* Expiry */}
+          <span className="w-fit rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1.5 text-xs font-semibold text-emerald-700 sm:px-4 sm:text-sm">
+            ⏳ Expires in 30 Days
+          </span>
 
-                        <button onClick={()=>onSend()} className="flex flex-col items-center cursor-pointer justify-center rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md">
-                            <MessageCircle className="mb-2 h-7 w-7 text-green-500" />
-                            <span className="text-sm font-medium">WhatsApp</span>
-                        </button>
-
-                        <button onClick={()=>onCopyLink() }
-                            className="flex flex-col items-center justify-center cursor-pointer rounded-xl border border-gray-200 bg-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md"
-                        >
-                            <Copy className="mb-2 h-7 w-7 text-indigo-500" />
-                            <span className="text-sm font-medium">Copy Link</span>
-                        </button>
-
-                    </div>
-                </div>
-                <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-end">
-
-                    <Link href="/dashboard">
-                        <button className="flex w-full items-center justify-center gap-2 rounded-xl cursor-pointer border border-gray-300 bg-white px-6 py-3 font-medium text-gray-700 transition-all duration-300 hover:border-gray-400 hover:bg-gray-100 hover:shadow-sm sm:w-auto">
-                            <ArrowLeft className="h-5 w-5" />
-                            Back to Dashboard
-                        </button>
-                    </Link>
-
-                    <Link href="/dashboard/create-interview">
-                        <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 font-medium text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 sm:w-auto cursor-pointer">
-                            <Plus className="h-5 w-5" />
-                            Create New Interview
-                        </button>
-                    </Link>
-
-                </div>
-            </div>
         </div>
-    )
-}
 
-export default InterviewLink
+
+        {/* URL + Copy */}
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+
+          <Input
+            className="h-11 min-w-0 flex-1 rounded-xl border-gray-300 bg-white text-sm text-gray-700 sm:text-base"
+            value={url}
+            readOnly
+          />
+
+          <button
+            onClick={onCopyLink}
+            className="flex h-11 w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-700 active:scale-95 sm:w-auto sm:text-base"
+          >
+            <CopyIcon className="h-4 w-4" />
+            Copy Link
+          </button>
+
+        </div>
+
+
+        {/* Interview Stats */}
+        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+
+          {/* Duration */}
+          <div className="flex min-w-0 items-center gap-3 rounded-xl bg-white/80 px-4 py-3 shadow-sm">
+            <Clock className="h-5 w-5 shrink-0 text-blue-600" />
+
+            <div className="min-w-0">
+              <p className="text-xs text-gray-500">
+                Duration
+              </p>
+
+              <p className="truncate text-sm font-semibold text-gray-800">
+                {formData?.duration} Minutes
+              </p>
+            </div>
+          </div>
+
+
+          {/* Questions */}
+          <div className="flex min-w-0 items-center gap-3 rounded-xl bg-white/80 px-4 py-3 shadow-sm">
+            <ListCollapse className="h-5 w-5 shrink-0 text-green-600" />
+
+            <div className="min-w-0">
+              <p className="text-xs text-gray-500">
+                Questions
+              </p>
+
+              <p className="text-sm font-semibold text-gray-800">
+                {questionCount} Questions
+              </p>
+            </div>
+          </div>
+
+
+          {/* Role */}
+          <div className="flex min-w-0 items-center gap-3 rounded-xl bg-white/80 px-4 py-3 shadow-sm">
+            <BriefcaseBusiness className="h-5 w-5 shrink-0 text-red-600" />
+
+            <div className="min-w-0">
+              <p className="text-xs text-gray-500">
+                Role
+              </p>
+
+              <p className="truncate text-sm font-semibold text-gray-800">
+                {formData?.jobPosition}
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+
+        {/* Share Via */}
+        <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:mt-8 sm:p-6">
+
+          <h2 className="mb-4 text-lg font-semibold text-gray-800">
+            Share Via
+          </h2>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+
+            {/* Email */}
+            <button
+              onClick={onSend}
+              className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md sm:p-4"
+            >
+              <Mail className="mb-2 h-6 w-6 text-red-500 sm:h-7 sm:w-7" />
+              <span className="text-xs font-medium sm:text-sm">
+                Email
+              </span>
+            </button>
+
+
+            {/* Telegram */}
+            <button
+              onClick={onSend}
+              className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md sm:p-4"
+            >
+              <Send className="mb-2 h-6 w-6 text-sky-500 sm:h-7 sm:w-7" />
+              <span className="text-xs font-medium sm:text-sm">
+                Telegram
+              </span>
+            </button>
+
+
+            {/* WhatsApp */}
+            <button
+              onClick={onSend}
+              className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md sm:p-4"
+            >
+              <MessageCircle className="mb-2 h-6 w-6 text-green-500 sm:h-7 sm:w-7" />
+              <span className="text-xs font-medium sm:text-sm">
+                WhatsApp
+              </span>
+            </button>
+
+
+            {/* Copy */}
+            <button
+              onClick={onCopyLink}
+              className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-3 transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md sm:p-4"
+            >
+              <Copy className="mb-2 h-6 w-6 text-indigo-500 sm:h-7 sm:w-7" />
+              <span className="text-xs font-medium sm:text-sm">
+                Copy Link
+              </span>
+            </button>
+
+          </div>
+        </div>
+
+
+        {/* Bottom Actions */}
+        <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:justify-end">
+
+          <Link href="/dashboard" className="w-full sm:w-auto">
+            <button
+              className="flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-5 text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-gray-100 sm:h-12 sm:w-auto sm:px-6 sm:text-base"
+            >
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+              Back to Dashboard
+            </button>
+          </Link>
+
+
+          <Link
+            href="/dashboard/create-interview"
+            className="w-full sm:w-auto"
+          >
+            <button
+              className="flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-95 sm:h-12 sm:w-auto sm:px-6 sm:text-base"
+            >
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
+              Create New Interview
+            </button>
+          </Link>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default InterviewLink;
