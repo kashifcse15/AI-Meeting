@@ -354,10 +354,6 @@ const Login = () => {
 
             <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
 
-            <span className="whitespace-nowrap text-[7px] tracking-[0.25em] text-white/25 sm:text-[8px] sm:tracking-[0.3em]">
-              START YOUR JOURNEY
-            </span>
-
             <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
 
           </div>
