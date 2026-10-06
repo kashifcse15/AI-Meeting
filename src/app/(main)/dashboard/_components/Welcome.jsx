@@ -11,7 +11,7 @@ const Welcome = () => {
   const router = useRouter();
 
   return (
-    <header className="relative mt-5 w-full overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:mt-6 sm:px-5 sm:py-3.5 md:mt-7 md:px-6">
+    <header className="relative mt-2 ml-4 mr-4 w-[calc(100%-2rem)] overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm sm:mt-3 sm:px-5 sm:py-3.5 md:ml-5 md:mr-5 md:mt-3 md:px-6">
       <div className="absolute -right-16 -top-16 h-32 w-32 rounded-full bg-violet-500/10 blur-3xl" />
 
       <div className="relative flex items-center justify-between gap-4">
@@ -21,9 +21,12 @@ const Welcome = () => {
             ArtemusXR
           </p>
 
-          <h1 className="truncate text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-            Welcome{user?.name ? `, ${user.name}` : ""} 👋
-          </h1>
+          <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+  <span className="sm:hidden">Welcome !!</span>
+  <span className="hidden sm:inline">
+    Welcome{user?.name ? `, ${user.name}` : ""} 👋
+  </span>
+</h1>
         </div>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
