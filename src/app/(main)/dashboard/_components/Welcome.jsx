@@ -22,11 +22,11 @@ const Welcome = () => {
           </p>
 
           <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-  <span className="sm:hidden">Welcome !!</span>
-  <span className="hidden sm:inline">
-    Welcome{user?.name ? `, ${user.name}` : ""} 👋
-  </span>
-</h1>
+            <span className="sm:hidden">Welcome !!</span>
+            <span className="hidden sm:inline">
+              Welcome{user?.name ? `, ${user.name}` : ""} 👋
+            </span>
+          </h1>
         </div>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
